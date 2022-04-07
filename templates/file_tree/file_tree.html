@@ -1,0 +1,15 @@
+
+{% extends 'base/base2.html' %}
+
+{% block m_content %}
+
+<a href="/file_tree/tree?eco_dir_path={{father_tree}}" style="color:green;font-weight:bold">{{father_tree}}</a>
+{% for k in file_tree_dict %}
+    <p><a href="/file_tree/tree?eco_dir_path={{k}}" style="color:black;font-weight:bold">{{k}}</a></p>
+    {% for fi in file_tree_dict[k]-%}
+        <a href="/file_tree/file_str?eco_f_path={{fi.final_path}}">{{fi.final_name}}</a>&emsp;
+    {% endfor -%}
+{% endfor %}
+
+{% endblock %}
+

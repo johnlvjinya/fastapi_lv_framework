@@ -1,0 +1,148 @@
+
+{% extends 'base/base2.html' %}
+
+
+{% block css %}
+<style type="text/css">
+
+.popup-modal {
+  padding: 10px 10px;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 10px;
+  position: fixed;
+  min-width: 30rem;
+  top: 50%;
+  left: 50%;
+  transform-origin: center;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0%;
+  text-align: center;
+}
+
+.popup-modal p {
+  margin-bottom: 24px
+}
+
+.backdrop {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  background: #000;
+  opacity: 0%;
+}
+
+.popup-modal.show {
+  opacity: 100%;
+  pointer-events: all;
+}
+
+.popup-modal {
+  transition: transform .3s ease-in-out, opacity .4s ease;
+  transform: translate(-50%, -100%);
+}
+
+.popup-modal.show {
+  transform: translate(-50%, -50%);
+}
+
+
+</style>
+
+{% endblock %}
+
+
+{% block script %}
+<script type="text/javascript">
+// 点击编辑或新增后，改变dialog中的状态
+function update_table_submit_do(modal_id){
+    console.log($('#testform1').serializeArray())
+    var data ={
+        data:JSON.stringify({
+        'modal_id': modal_id,
+        'form_data': $('#testform1').serializeArray()//.serialize() //.serialize(),// 你的formid
+        })
+    };
+    console.log('data...', data);
+
+    $.ajax({
+        url:'/cs_js_pages/test_form_deal',
+        type:'get',
+        data: data,                
+        success:function(res){
+            console.log('成功',res);
+            toggleModal()
+        },
+        error:function (res) {
+            console.log('失败',res);
+        }
+    });
+
+}    
+
+</script>
+{% endblock %}
+
+
+{% block m_content %}
+
+<h1>popup-modal弹窗</h1><br><br>
+<div class="popup-modal">
+    <!-- <button id="close-modal">关闭</button> -->
+  <img height="16" width="16" id="close-modal" align="right" src="/static/icons/debian.svg"/>
+  <h1>Look at me!</h1>
+  <p>I'm a pop up dialog!</p>
+  <form  id='testform1'  method="get">
+
+    <!-- <fieldset> -->
+      <input type="text" maxlength="20" name="day_str" placeholder="日期:XXXX-XX-XX" />
+
+      <label for="nameField">Name</label>
+      <input type="text" placeholder="CJ Patoilo" name="nameField">
+
+      <label for="ageRangeField">Age Range</label>
+      <select name="ageRangeField">
+          <option value="0-13">0-13</option>
+          <option value="14-17">14-17</option>
+          <option value="18-23">18-23</option>
+          <option value="24+">24+</option>
+      </select>
+
+      <label for="commentField">Comment</label>
+      <textarea placeholder="Hi CJ …" name="commentField"></textarea>
+      <!-- <br><br><input class="button-primary" type="submit" value="确定"> -->
+    <!-- </fieldset> -->
+  </form>
+    <br><br>
+    <button onclick="update_table_submit_do('modal_id')">提交</button>
+</div>
+
+
+<button id="trigger-modal">Open Modal</button>
+<br><br>
+
+
+
+
+{% endblock %}
+
+{% block script_foot %}
+<script>
+  const openButton = document.getElementById('trigger-modal');
+  const closeButton = document.getElementById('close-modal');
+  const backdrop = document.getElementById('backdrop')
+
+  function toggleModal() {
+    const modalDiv = document.querySelector('.popup-modal');
+    const backdrop = document.querySelector('.backdrop')
+
+    modalDiv.classList.toggle('show');
+    backdrop.classList.toggle('show');
+  }
+
+  openButton.addEventListener('click', toggleModal);
+  closeButton.addEventListener('click', toggleModal);
+</script>
+
+{% endblock %}

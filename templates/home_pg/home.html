@@ -1,0 +1,733 @@
+
+{% extends 'base/base2.html' %}
+
+{% block css %}
+<style>
+
+  .box {
+    /*text-align: center;*/
+    width: 97.5%;
+ /*   height: 85px;*/
+    border: 1px solid black;
+    float: left;
+    overflow:hidden;
+    border: 0.1rem solid #BEBEBE;
+    border-radius: .4rem;
+    margin-left: 1rem;
+
+  }  
+
+  .box2 {
+    /*text-align: center;*/
+    width: 48%;
+ /*   height: 85px;*/
+    border: 1px solid black;
+    float: left;
+    overflow:hidden;
+    border: 0.1rem solid #BEBEBE;
+    border-radius: .4rem;
+    margin-left: 1rem;
+
+  }    
+
+</style>
+{% endblock %} 
+
+{% block m_content %}
+<div class="box">
+<a href='https://tool.oschina.net/commons?type=3' target="_blank">颜色调整</a>
+</div>
+
+<div class="box2">
+    <a><font style="background: #FFBBFF;border-radius: .4rem;font-weight: bold">箱型计算一致率对比图</font></a>
+    <a href="/file_tree/image_data_tree?d=data_analysis_res&echo2_str=装箱算法/03箱型计算对比-2022" target="_blank"><font style="background:#FFE1FF;border-radius: .4rem;">详细结果</font></a>
+    <a href="/mix_special_html/bin_results_daily_print?day_str=" target="_blank"><font style="background:#F0FFF0;border-radius: .4rem;">箱型复盘</font></a>
+    <div id="container_bin_consistant_line_bars_mix" style="height: 600px"></div>
+</div>
+
+<div class="box2">
+    <a><font style="background: #FFBBFF;border-radius: .4rem;font-weight: bold">路由推荐算法</font></a>
+<!--     <a href="/file_tree/image_data_tree?d=data_analysis_res&echo2_str=路由推荐/02分析两个城市"><font style="background: #E0FFFF;border-radius: .4rem;">路由时效统计</font></a> -->
+    <a href="/mix_special_html/route_exists_real_rout_list" target="_blank"><font style="background:#7FFFD4;border-radius: .4rem;">路由分析报告</font></a>
+
+    <div id="container_china_map" style="height: 600px"></div>
+</div>
+
+<div class="box">
+<br><br><br>
+</div>
+
+
+{% endblock %}
+
+
+{% block script_foot %}
+<script>
+
+
+// **********************************************************************************************************************
+// 图标类型: line_bars_mix
+// container_id: bin_consistant_line_bars_mix
+// 数据url:/echarts_pg/ecj?d=ec_json&j=bin_inconsistant_line_bars_mix.json
+// **********************************************************************************************************************
+function get_my_data_bin_consistant_line_bars_mix() {
+    var datas= null;//定义一个全局变量
+    $.ajax({
+        type:"GET",
+        url:"/echarts_pg/ecj?d=ec_json&j=bin_inconsistant_line_bars_mix.json",
+        async:false,
+        data:"",
+        success:function(res){
+            // 获取数据并保存至变量
+            // console.log(res)
+            datas = res;
+            }
+        });
+    return datas
+}
+var mydata_bin_consistant_line_bars_mix = get_my_data_bin_consistant_line_bars_mix();
+console.log(mydata_bin_consistant_line_bars_mix);
+var t_color_bin_consistant_line_bars_mix = "black";
+console.log(t_color_bin_consistant_line_bars_mix);
+var dom = document.getElementById('container_bin_consistant_line_bars_mix');
+var chart_bin_consistant_line_bars_mix = echarts.init(dom);
+var app = {};
+option = null;
+option = {
+    textStyle: {
+      fontFamily: 'times new roman',
+      fontSize:20,
+      color:function(){return t_color_bin_consistant_line_bars_mix;},
+
+    },
+
+    title: {
+        text: ''
+    },
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'cross'
+        },
+        // textStyle : {
+        //     color: 'black',
+        //     decoration: 'none',
+        //     fontFamily: 'Verdana, sans-serif',
+        //     fontSize: 20,
+        //     // fontStyle: 'italic',
+        //     // fontWeight: 'bold'
+        // },
+    },
+    // legend: {
+    //     data: mydata_bin_consistant_line_bars_mix.legend_data
+    // },
+    legend: {
+        // left: 'center',
+        // top: 'bottom',         
+        icon: 'rectangle',
+        data: mydata_bin_consistant_line_bars_mix.legend_data,
+        right: '4%',
+        padding:[20,0,0,0],   //可设定图例[距上方距离，距右方距离，距下方距离，距左方距离]
+        textStyle: {
+            fontSize: 20,
+            color: function(){},
+         }
+    },
+
+
+    toolbox: {
+        show: true,
+        orient: 'vertical',
+        left: 'right',
+        top: 'center',
+        feature: {
+            mark: {show: true},
+            dataView: {show: true, readOnly: false},
+            magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+            restore: {show: true},
+            saveAsImage: {show: true}
+        }
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    xAxis: [
+        {
+            type: 'category',
+            data: mydata_bin_consistant_line_bars_mix.xAxis_data,
+            axisLabel: {
+                textStyle: {
+                    fontSize: 20,
+                    color: function(){return t_color_bin_consistant_line_bars_mix;},
+                }
+            }, 
+            axisLine:{ //y轴
+                show:true,
+            },          
+        }
+    ],
+    yAxis: [
+        {
+            type: 'value',
+            axisLabel: {
+                textStyle: {
+                    fontSize: 20,
+                    color: function(){return t_color_bin_consistant_line_bars_mix;},
+                }
+            },
+            splitLine: {show : false},             
+            axisTick:{ //y轴刻度线
+                show:true,
+            },
+            axisLine:{ //y轴
+                show:true,
+            },
+
+        },
+        {
+            type: 'value',
+            axisLabel: {
+                textStyle: {
+                    fontSize: 20,
+                    color:  function(){return t_color_bin_consistant_line_bars_mix;},
+                }
+            },
+            axisTick:{ //y轴刻度线
+                show:true,
+            },
+            axisLine:{ //y轴
+                show:true,
+            },
+
+
+            splitLine: {show : false},            
+            // name: '次坐标',
+            // min: 0,
+            // max: 25,
+            // interval: 5,
+            // axisLabel: {
+            //     formatter: '{value} °C'
+            // }
+        }
+    ],
+    
+    series: mydata_bin_consistant_line_bars_mix.series,
+    // backgroundColor:'white', //设置无背景色    
+    toolbox:{
+            show: true,
+            feature: {
+              myFull: {
+                show: true,
+                title: '全屏',
+                icon: "path://M432.45,595.444c0,2.177-4.661,6.82-11.305,6.82c-6.475,0-11.306-4.567-11.306-6.82s4.852-6.812,11.306-6.812C427.841,588.632,432.452,593.191,432.45,595.444L432.45,595.444z M421.155,589.876c-3.009,0-5.448,2.495-5.448,5.572s2.439,5.572,5.448,5.572c3.01,0,5.449-2.495,5.449-5.572C426.604,592.371,424.165,589.876,421.155,589.876L421.155,589.876z M421.146,591.891c-1.916,0-3.47,1.589-3.47,3.549c0,1.959,1.554,3.548,3.47,3.548s3.469-1.589,3.469-3.548C424.614,593.479,423.062,591.891,421.146,591.891L421.146,591.891zM421.146,591.891",
+
+                onclick: (e) => {
+                    if (t_color_bin_consistant_line_bars_mix=='white'){
+                        t_color_bin_consistant_line_bars_mix = 'black';
+                    }else{
+                        t_color_bin_consistant_line_bars_mix = 'white';
+                    }
+                  
+                  console.log(t_color_bin_consistant_line_bars_mix);
+                  const element = document.getElementById("container_bin_consistant_line_bars_mix");
+                  if (element.requestFullScreen) { // HTML W3C 提议
+                        element.requestFullScreen();
+                      } else if (element.msRequestFullscreen) { // IE11
+                        element.msRequestFullScreen();
+                      } else if (element.webkitRequestFullScreen) { // Webkit (works in Safari5.1 and Chrome 15)
+                        element.webkitRequestFullScreen();
+                      } else if (element.mozRequestFullScreen) { // Firefox (works in nightly)
+                        element.mozRequestFullScreen();
+                      }
+                  // 退出全屏
+                  if (element.requestFullScreen) {
+                        document.exitFullscreen();
+                      } else if (element.msRequestFullScreen) {
+                        document.msExitFullscreen();
+                      } else if (element.webkitRequestFullScreen) {
+                        document.webkitCancelFullScreen();
+                      } else if (element.mozRequestFullScreen) {
+                        document.mozCancelFullScreen();
+                      }
+
+
+                },
+              },
+            },
+          },
+
+};
+
+
+if (option && typeof option === "object") {
+    chart_bin_consistant_line_bars_mix.setOption(option, true);
+    window.addEventListener("resize",function(){
+        chart_bin_consistant_line_bars_mix.resize();
+    });
+
+}
+
+
+var dom = document.getElementById('container_china_map');
+var myChart = echarts.init(dom);
+var RTM_ICON = "/static/icons/abbott.svg.png";   //注意复制后添加image前缀，否则图片就是一个绿色实心方块
+var RTM_DC_ICON = "/static/icons/abbott.svg.png";
+var DIST_ICON = "/static/icons/abbott.svg.png";
+var NESTLE_DC_ICON = "/static/icons/abbott.svg.png";
+var map_title = '生生物流路由网点布局';
+var jsonMapData = {
+    中国: '/static/map_json/中国.json',
+    // 上海: '/static/map_json/上海.json',
+    // 河北: '/static/map_json/河北.json',
+    // 山西: '/static/map_json/山西.json',
+    // 内蒙古: '/static/map_json/内蒙古.json',
+    // 辽宁: '/static/map_json/辽宁.json',
+    // 吉林: '/static/map_json/吉林.json',
+    // 黑龙江: '/static/map_json/黑龙江.json',
+    // 江苏: '/static/map_json/江苏.json',
+    // 浙江: '/static/map_json/浙江.json',
+    // 安徽: '/static/map_json/安徽.json',
+    // 福建: '/static/map_json/福建.json',
+    // 江西: '/static/map_json/江西.json',
+    // 山东: '/static/map_json/山东.json',
+    // 河南: '/static/map_json/河南.json',
+    // 湖北: '/static/map_json/湖北.json',
+    // 湖南: '/static/map_json/湖南.json',
+    // 广东: '/static/map_json/广东.json',
+    // 广西: '/static/map_json/广西.json',
+    // 海南: '/static/map_json/海南.json',
+    // 四川: '/static/map_json/四川.json',
+    // 贵州: '/static/map_json/贵州.json',
+    // 云南: '/static/map_json/云南.json',
+    // 西藏: '/static/map_json/西藏.json',
+    // 陕西: '/static/map_json/陕西.json',
+    // 甘肃: '/static/map_json/甘肃.json',
+    // 青海: '/static/map_json/青海.json',
+    // 宁夏: '/static/map_json/宁夏.json',
+    // 新疆: '/static/map_json/新疆.json',
+    // 北京: '/static/map_json/北京.json',
+    // 天津: '/static/map_json/天津.json',
+    // 重庆: '/static/map_json/重庆.json',
+    // 香港: '/static/map_json/香港.json',
+    // 澳门: '/static/map_json/澳门.json',
+    // 台湾: '/static/map_json/台湾.json',
+};
+
+// //打印地图城市编号和名称
+// for(let key in jsonMapData) {
+//     $.getJSON(jsonMapData[key], null, function (data) {
+//         if(data.features !== undefined) {
+//             console.log(key)
+//             for(let feature of data.features) {
+//                 if(feature.id && feature.properties && feature.properties.name) {
+//                     console.log(`\t${feature.id}\t${feature.properties.name}`)
+//                 }
+//             }
+//         }
+//     })
+// }
+
+// need to revise
+var totalData = [
+];
+
+function getSeriesData(name, dataset) {
+    if (dataset === undefined) {
+        dataset = totalData;
+    }
+    for (let data of dataset) {
+        if (name === data.name) {
+            if (data.subData) {
+                // for (let sub of data.subData) {
+                //     console.log(sub.name);
+                // }
+                return data.subData;
+            } else {
+                return [];
+            }
+        } else {
+            if (data.subData) {
+                subResult = getSeriesData(name, data.subData);
+                if (subResult) {
+                    return subResult;
+                }
+            }
+        }
+    }
+    return null;
+}
+
+function getsimboldata(mapName, XXX_ARR) {
+    //console.log(mapName);
+    let final_arr = [];
+    for (let arr of XXX_ARR) {
+        if (mapName === '中国') {
+            final_arr = final_arr.concat(arr.locs);
+        } else if (mapName === arr.province) {
+            return arr.locs;
+        }
+    }
+    // console.log(final_arr);
+    return final_arr;
+}
+
+
+function get_data1234() {
+    var datas= null;//定义一个全局变量
+    $.ajax({
+        type:"GET",
+        url:"/echarts_pg/ecj?d=data_json&j=route_station_list.json",
+        async:false,
+        data:"",
+        success:function(res){
+            // 获取数据并保存至变量
+            console.log('', res)
+            datas = res;
+            }
+        });
+    return datas
+}
+var station_list = get_data1234();
+console.log('station_list==================', station_list)
+
+var RTM_DC_ARR =[ 
+    {province: '中国', locs: [{name:"厦门DC_厦门市翔安区新圩镇新霞南路609号A3号库 ",value:[118.257265,24.713728,0]}]}, 
+    {province: '中国', locs: station_list.station_point_list}
+    ];
+
+
+function loadMap(mapName) {
+    console.log(`loadMap: ${mapName}`);
+    var seriesData = getSeriesData(mapName);
+    var jsonData = jsonMapData[mapName];
+
+    let minValue = 99999;
+    let maxValue = -1;
+    if (seriesData) {
+        for (let data of seriesData) {
+            if (data.value !== undefined) {
+                if (data.value < minValue) {
+                    minValue = data.value;
+                }
+                if (data.value > maxValue) {
+                    maxValue = data.value;
+                }
+            }
+        }
+    }
+
+    if (jsonData === undefined) {
+        // alert("找不到地图数据")
+        return;
+    }
+    var dom = document.getElementById('container_china_map');
+
+    $.getJSON(jsonData, null, function (data) {
+        echarts.registerMap(mapName, data);
+        myChart.hideLoading();
+
+        //地图具体样式
+        option = {
+            backgroundColor: '#FFFFFF', //地图背景色white
+            tooltip: {
+                trigger: 'item',
+                formatter: function (params) {
+                    if (typeof params.value[2] == 'undefined') {
+                        return params.name + ' : ' + params.value.toFixed(1);
+                    } else if (params.value[2] === 0) {
+                        return params.name;
+                    } else {
+                        return params.name + ' : ' + params.value[2].toFixed(1);
+                    }
+                },
+            },
+            
+            
+            legend: {
+                //各标记图例
+                orient: 'horizontal',
+                id: 1,
+                y: 'top',
+                x: 'left',
+                itemWidth: 10,
+                // data: [
+                //     {
+                //         name: 'RTM',
+                //         icon: RTM_ICON, 
+                //     },
+
+                //     {
+                //         name: 'RDC',
+                //         icon: RTM_DC_ICON, size : 100
+                //     },
+                    
+                //     {
+                //         name: 'DIST',
+                //         icon: DIST_ICON, size : 0
+                //     },    
+                    
+                //     {
+                //         name: 'NESTLE_DC',
+                //         icon: NESTLE_DC_ICON, size : 0
+                //     },                      
+                // ],
+                textStyle: {
+                    color: '#0B1C51', //legend图标颜色  深灰
+                    size: 40,
+                },
+            },
+            title: {
+                text:  mapName + map_title,
+                left: 'left',
+                top: '60',
+                textStyle: {
+                    color: '#0B1C51',
+                    size: 20,
+                },
+            },
+            visualMap: [
+                {
+                    min: 0, //IF NO WAREHOUSES IN THIS CITY
+                    max: maxValue, //填写城市的最大值
+                    seriesIndex: 0,
+                    show: true,
+                    //splitNumber: 4,
+                    //   right: '2%',
+                    inRange: {
+                        color: ["#F0F8FF",  "#E066FF"],
+                    },
+                    //       calculable: true,
+                    textStyle: {
+                        color: "#0B1C51", //legend图标颜色  深灰
+                        size: 20,
+                    },
+                    formatter: function (value) {
+                        return value.toFixed(1);
+                        //       return "";    左下角图例滑过时显示空值
+                    },
+                },
+            ],
+
+            geo: {
+                show: true,
+                map: mapName,
+                label: {
+                    normal: {
+                        show: true, //是否显示城市名
+                        textStyle: {
+                            color: '#000000', //legend字体颜色  深蓝
+                            fontSize: 0,
+                        },
+                        verticalAlign: 'middle',
+                        align: 'left',
+                    },
+                    emphasis: {
+                        show: false,
+                    },
+                },
+                zoom: 1.2,
+                roam: true,
+                itemStyle: {
+                    normal: {
+                        areaColor: '#FFFFFF',
+                        borderColor: '#9AA1B7', //地图边框颜色  蓝色
+                        borderWidth: 1.5,
+                        //     shadowColor: 'rgba(63, 218, 255, 0.5)',    //地图边框阴影颜色
+                        //   shadowBlur: 30
+                    },
+                    emphasis: {
+                        areaColor: '#52B3D6',
+                    },
+                },
+            },
+            toolbox: {
+                show: true,
+                left: 'left',
+                top: '25',
+                iconStyle: {
+                    borderColor: '#0B1C51',   //工具箱按钮颜色
+                },
+                feature: {
+                    dataView: { readOnly: false },
+                    // restore: {},
+                    // saveAsImage: {},
+
+                    myTool1: {
+                        show: true,
+                        title: '重置地图',
+                        icon:
+                            'M1007.772025 142.969542l-70.419421 53.799178A527.751816 527.751816 0 0 0 524.288347 0.003938C234.733768 0.003938 0.396208 228.591367 0.002363 511.371818-0.391482 794.467344 234.497461 1024 524.288347 1024c226.381899 0 419.287003-140.208692 492.699643-336.579629a9.688578 9.688578 0 0 0-6.065207-12.603028l-70.892035-23.709447a10.082423 10.082423 0 0 0-12.603029 5.8289 416.687628 416.687628 0 0 1-99.406387 151.551418 431.181111 431.181111 0 0 1-303.496679 122.879527c-58.0527 0-114.214945-11.106419-166.990127-32.925412a427.085127 427.085127 0 0 1-228.587428-223.30991 408.653197 408.653197 0 0 1-33.713101-163.287988c0-56.713628 11.421495-111.536802 33.713101-163.209218a416.687628 416.687628 0 0 1 92.080877-133.355795 431.181111 431.181111 0 0 1 303.496678-122.879527c58.0527 0 114.214945 11.02765 167.068896 32.925412a427.085127 427.085127 0 0 1 171.243649 128.235814l-75.224326 57.265011a9.688578 9.688578 0 0 0 3.780909 17.250395l219.213926 52.381337c6.301514 1.49661 12.366722-3.150757 12.366722-9.373503l1.023996-220.552998c-0.157538-8.034431-9.767347-12.603028-16.2264-7.561817z',
+                        onclick: function () {
+                            loadMap('中国');
+                        },
+                    },
+
+
+                    myToolStart: {
+                        show: true,
+                        title: '播放',
+                        icon:
+                            'M510.6 64.9C263.4 64.9 63 265.3 63 512.5S263.4 960 510.6 960s447.6-200.4 447.6-447.6S757.7 64.9 510.6 64.9z m174.9 464.3L374.9 708.6c-12.9 7.4-29-1.9-29-16.7V333.1c0-14.9 16.1-24.2 29-16.7l310.6 179.3c12.9 7.5 12.9 26.1 0 33.5z',
+                        onclick: function () {
+                            startAutoShow();
+                        },
+                    },
+                    myToolStop: {
+                        show: true,
+                        title: '停止',
+                        icon:
+                            'M722.9375 933.875H301.0625a210.9375 210.9375 0 0 1-210.9375-210.9375V301.0625a210.9375 210.9375 0 0 1 210.9375-210.9375h421.875a210.9375 210.9375 0 0 1 210.9375 210.9375v421.875a210.9375 210.9375 0 0 1-210.9375 210.9375z',
+                        onclick: function () {
+                            stopAutoShow();
+                        },
+                    },
+                    mySelectAll: {
+                        show: true,
+                        title: '全选',
+                        icon:
+                            'M102.4 302.08c5.12 5.12 15.36 10.24 25.6 10.24s15.36-5.12 25.6-10.24l174.08-174.08c5.12-5.12 10.24-15.36 10.24-25.6s-5.12-15.36-10.24-25.6c-20.48-5.12-40.96-5.12-51.2 10.24l-148.48 153.6-71.68-76.8C51.2 158.72 40.96 158.72 35.84 158.72c-10.24 0-15.36 5.12-25.6 10.24-5.12 5.12-10.24 10.24-10.24 20.48s5.12 15.36 10.24 25.6L102.4 302.08zM276.48 409.6l-148.48 153.6-71.68-71.68C51.2 486.4 40.96 481.28 35.84 481.28c-10.24 0-15.36 5.12-25.6 10.24-5.12 10.24-10.24 15.36-10.24 25.6s5.12 15.36 10.24 25.6L102.4 629.76c5.12 5.12 15.36 10.24 25.6 10.24s15.36-5.12 25.6-10.24L322.56 460.8c5.12-5.12 10.24-15.36 10.24-25.6s-5.12-15.36-10.24-25.6c-10.24-10.24-30.72-10.24-46.08 0z m0 327.68l-148.48 153.6L56.32 819.2c-5.12-5.12-15.36-10.24-25.6-10.24s-15.36 5.12-25.6 10.24c0 5.12-5.12 15.36-5.12 25.6s5.12 15.36 10.24 25.6L102.4 957.44c5.12 5.12 15.36 10.24 25.6 10.24h5.12c10.24 0 15.36-5.12 25.6-10.24l174.08-174.08c5.12-5.12 10.24-15.36 10.24-25.6s-5.12-15.36-10.24-25.6c-25.6-5.12-40.96-5.12-56.32 5.12zM1024 153.6c0 30.72-25.6 56.32-56.32 56.32h-460.8c-30.72 0-61.44-25.6-61.44-56.32 0-30.72 25.6-56.32 56.32-56.32h455.68c35.84-5.12 66.56 20.48 66.56 56.32z m0 358.4c0 30.72-25.6 56.32-56.32 56.32h-460.8c-30.72 0-56.32-25.6-56.32-56.32s25.6-56.32 56.32-56.32h455.68c35.84 0 61.44 25.6 61.44 56.32z m-5.12 358.4c0 30.72-25.6 56.32-56.32 56.32h-460.8c-30.72 0-56.32-25.6-56.32-56.32 0-30.72 25.6-56.32 56.32-56.32h455.68c35.84 0 61.44 25.6 61.44 56.32z m0 0',
+                        onclick: function () {
+                            myChart.dispatchAction({
+                                type: 'legendAllSelect',
+                            });
+                        },
+                    },
+                    myUnSelectAll: {
+                        show: true,
+                        title: '取消全选',
+                        icon:
+                            'M519.656727 472.459636l-160.512-160.488727a36.584727 36.584727 0 1 0-51.712 51.712l160.488728 160.512-160.488728 160.512a36.584727 36.584727 0 1 0 51.712 51.712l160.512-160.512 160.488728 160.512a36.584727 36.584727 0 1 0 51.735272-51.712l-160.512-160.512 160.512-160.512a36.584727 36.584727 0 1 0-51.735272-51.712L519.68 472.436364zM512 1024C229.236364 1024 0 794.763636 0 512S229.236364 0 512 0s512 229.236364 512 512-229.236364 512-512 512z',
+                        onclick: function () {
+                            myChart.dispatchAction({
+                                type: 'legendAllSelect',
+                            });
+                            myChart.dispatchAction({
+                                type: 'legendInverseSelect',
+                            });
+                        },
+                    },
+                },
+            },
+               series: [
+                {
+                    type: 'map',
+                    map: mapName,
+                    // left: 'center',
+                    // top: 'middle',
+                    geoIndex: 0,
+                    aspectScale: 0.75, //长宽比
+                    showLegendSymbol: false, // 存在legend时显示
+                    label: {
+                        normal: {
+                            show: false,
+                        },
+                        emphasis: {
+                            show: false,
+                            textStyle: {
+                                color: '#fff',
+                            },
+                        },
+                    },
+                    roam: true,
+                    itemStyle: {
+                        normal: {
+                            areaColor: '#031525',
+                            borderColor: '#3B5077',
+                        },
+                        emphasis: {
+                            areaColor: '#2B91B7',
+                        },
+                    },
+                    animation: false,
+                    // data: data
+                    data: seriesData,
+                },
+
+
+//RTM DC
+                {
+                    name: 'RTM_DC',
+                    type: 'scatter',
+                    coordinateSystem: 'geo',
+                    data: getsimboldata(mapName, RTM_DC_ARR),
+                    symbol: RTM_DC_ICON,
+                    symbolSize: function (val) {
+                        return 8;
+                    },
+                    label: {
+                        normal: {
+                            show: false,
+                            formatter: function (params) {
+                                // console.log(params);
+                                return params.name;
+                            },
+                            position: 'right',
+                            color: '#69A4D9',
+                            fontSize: '8',
+                        },
+                        emphasis: {
+                            show: false,
+                        },
+                    },
+                    itemStyle: {
+                        normal: {
+                            color: '#4bbbb2',
+                            borderWidth: 2,
+                            borderColor: '#b4dccd',
+                        },
+                    },
+                },
+            
+              
+                
+            ],
+        };
+        myChart.clear();
+        myChart.setOption(option);
+    });
+}
+
+myChart.on('click', function (params) {
+    // 控制台打印数据的名称
+    if (params.data) {
+        loadMap(params.data.name);
+        // alert(params.data.name);
+    }
+});
+
+let keyArray = [];
+for (let key in jsonMapData) {
+    keyArray.push(key);
+}
+let keyIdx = 0;
+let intervalID = 0;
+
+function startAutoShow(duration) {
+    stopAutoShow();
+    intervalID = setInterval(function () {
+        keyIdx++;
+        if (keyIdx >= keyArray.length) {
+            keyIdx = 0;
+        }
+        if (getSeriesData(keyArray[keyIdx])) {
+            loadMap(keyArray[keyIdx]);
+        }
+    }, 3500);   //ms
+}
+function stopAutoShow() {
+    if (intervalID !== 0) {
+        clearInterval(intervalID);
+        intervalID = 0;
+    }
+    loadMap('中国');
+}
+
+loadMap('中国');
+
+
+
+</script>
+{% endblock %}  

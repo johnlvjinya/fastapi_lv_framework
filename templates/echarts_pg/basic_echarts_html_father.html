@@ -1,0 +1,48 @@
+{{lp}} extends 'base/base2.html' {{rp}}
+
+{{lp}} block css {{rp}}
+<style>
+  .box {
+    /*text-align: center;*/
+    width: 97.5%;
+ /*   height: 85px;*/
+    border: 1px solid black;
+    float: left;
+    overflow:hidden;
+    border: 0.1rem solid #BEBEBE;
+    border-radius: .4rem;
+    margin-left: 1rem;
+  }
+  .box2 {
+    /*text-align: center;*/
+    width: 48%;
+ /*   height: 85px;*/
+    border: 1px solid black;
+    float: left;
+    overflow:hidden;
+    border: 0.1rem solid #BEBEBE;
+    border-radius: .4rem;
+    margin-left: 1rem;
+
+  }   
+
+</style>
+{{lp}} endblock {{rp}} 
+
+{{lp}} block m_content {{rp}}
+
+{% for dict_x in j_dict.e_list %}
+<div class="box2">
+<a><font style="background: #FFBBFF;border-radius: .4rem;font-weight: bold">{{dict_x.title}}</font></a>
+<a href="#" target="_blank"><font style="background:#FFE1FF;border-radius: .4rem;">测试2</font></a>
+<div id="container_{{dict_x.c_name}}" style="height: 600px"></div>
+</div>
+{% endfor %}
+
+{{lp}} endblock {{rp}}
+
+
+{{lp}} block script_foot {{rp}}
+<script src="/static/js_ec_engine/{{js_name}}.js"></script></div>
+
+{{lp}} endblock {{rp}}

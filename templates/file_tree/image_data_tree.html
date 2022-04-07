@@ -1,0 +1,58 @@
+
+{% extends 'base/base2.html' %}
+
+{% block m_content %}
+<div style="margin-left:0%;margin-right:0%">
+
+{% if pretext_lines %}
+    <h3 style="margin-left:50px;">数据概览</h3>
+    {% for line in pretext_lines %}
+    <p style="margin-left:50px;">{{line}}</p>
+    {% endfor %}
+{% endif %}
+
+
+{% for fig in myfig_list %}
+    <img src="/file_tree/show_one_image?image_path={{fig.fig_path}}"><br>
+    <h3 style="margin-left:50px;">{{fig.name}}</h3>
+    <p style="font-weight: bold;color:grey;margin-left:50px;">*********************************************************</p>
+    {% for line in fig.lines %}
+    <p style="margin-left:50px;">{{line}}</p>
+    {% endfor %}
+    <p style="font-weight: bold;color:grey;margin-left:50px;">*********************************************************</p>
+
+    <table id="tab02" border="#ccc" cellspacing="0" cellpadding="0" table-layout:fixed style="border-collapse:collapse;margin-left:50px;min-width:832px;text-align:left;">
+    <tr>
+        {% for cn in fig.cols_cn_list%}
+        <th>{{cn}}</th>
+        {% endfor %}
+    </tr>
+        {% for i in fig.rows_dict_list %}
+            <tr>
+            {% for j in i %}
+                <td  style="max-width:350px">{{i[j]}}</td>
+            {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+
+    {% if fig.see_more %}
+    <a>&emsp;&emsp;......下载excel查看更多</a>
+    {% endif %}
+
+
+
+    {% if fig.download_excel_url %}
+    <a href="{{fig.download_excel_url}}">&emsp;&emsp;下载excel</a>
+    {% endif %}
+
+
+
+<br><br>
+{% endfor %}
+
+
+</div>
+
+{% endblock %}
+

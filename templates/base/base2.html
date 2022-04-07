@@ -1,0 +1,113 @@
+
+{% extends 'base/base1.html' %}
+
+{% block m_index %}
+
+<div class="dropdown">
+<a href="/"><font color="purple"> 主页 </font></a>
+</div>
+
+<div class="dropdown">
+<span><font color="purple"> 文档 </font></span>
+    <div class="dropdown-content">
+
+        <p><a href="/file_tree/tree?eco_dir_path=data">
+            <img height="16" width="16" src="/static/icons/align-center.svg"/>
+            <font color="purple"> 项目数据 </font></a></p>
+        <p><a href="/file_tree/tree?eco_dir_path=data_json">
+            <img height="16" width="16" src="/static/icons/align-center.svg"/>
+            <font color="purple"> data_json </font></a></p>
+        <p><a href="/file_tree/tree?eco_dir_path=readme">
+            <img height="16" width="16" src="/static/icons/align-center.svg"/>
+            <font color="purple"> Readme </font></a></p>
+        <p><a href="/home_pg/seatable_iframe?fn=seatable_iframe.html">
+            <img height="16" width="16" src="/static/icons/align-center.svg"/>
+            <font color="purple"> seatable </font></a></p>  
+        <p><a href="/docs">
+            <img height="16" width="16" src="/static/icons/align-center.svg"/>
+            <font color="purple"> 接口 </font></a></p> 
+    </div>
+</div>
+
+<div class="dropdown">
+<span><font color="purple"> 数据 </font></span>
+    <div class="dropdown-content">
+        <p><a href="/operator_invoke/analysis_list">
+            <img height="16" width="16" src="/static/icons/align-center.svg"/>
+            <font color="purple"> 运行 </font></a></p>
+        <p><a href="/file_tree/image_data_file_list">
+            <img height="16" width="16" src="/static/icons/align-center.svg"/>
+            <font color="purple"> 结果 </font></a></p>
+
+        <p><a href="/operator_invoke/operator_list">
+            <img height="16" width="16" src="/static/icons/align-center.svg"/>
+            <font color="purple"> 更新 </font></a></p>
+
+        <p><a href="/file_upload/file_upload_dir_list">
+            <img height="16" width="16" src="/static/icons/align-center.svg"/>
+            <font color="purple"> 上传 </font></a></p>   
+
+    </div>
+</div>
+
+
+<div class="dropdown">
+<span><font color="purple"> 开发 </font></span>
+    <div class="dropdown-content">
+
+
+
+        <p><a href="/echarts_pg/engine_html_list">
+            <img height="16" width="16" src="/static/icons/align-center.svg"/>
+            <font color="purple"> e_h列表 </font></a></p>
+        <p><a href="/echarts_pg/engine_json_list">
+            <img height="16" width="16" src="/static/icons/align-center.svg"/>
+            <font color="purple"> e_j列表 </font></a></p>
+
+        <p><a href="/echarts_pg/echarts_code_engine_list">
+            <img height="16" width="16" src="/static/icons/align-center.svg"/>
+            <font color="purple"> ec模板 </font></a></p>
+
+        <p><a href="/home_pg/echarts_test">
+            <img height="16" width="16" src="/static/icons/align-center.svg"/>
+            <font color="purple"> ec_test </font></a></p>
+
+        <p><a href="/cs_js_pages/icon_list?first_char=a">
+            <img height="16" width="16" src="/static/icons/align-center.svg"/>
+            <font color="purple"> icons </font></a></p>
+        <p><a href="/cs_js_pages/static_page_list">
+            <img height="16" width="16" src="/static/icons/align-center.svg"/>
+            <font color="purple"> 静态页面 </font></a></p>
+        <p><a href="/cs_js_pages/test_form_one">
+            <img height="16" width="16" src="/static/icons/align-center.svg"/>
+            <font color="purple"> 表单 </font></a></p>
+        <p><a href="/cs_js_pages/test_form_loop">
+            <img height="16" width="16" src="/static/icons/align-center.svg"/>
+            <font color="purple"> 循环表单 </font></a></p>
+    </div>
+</div>
+
+
+<div class="dropdown">
+<span><font color="purple"> 用户 </font></span>
+    <div class="dropdown-content">
+        <!-- <p><a href="/login"><font color="purple"> 登录 </font></a></p> -->
+        <p><a href="/logout">
+            <img height="16" width="16" src="/static/icons/align-center.svg"/>
+            <font color="purple"> 登出 </font></a></p>
+        <p><a href="/user_info">
+            <img height="16" width="16" src="/static/icons/align-center.svg"/>
+            <font color="purple"> 用户信息 </font></a></p>               
+    </div>
+</div>
+
+
+<div class="dropdown" onclick="hide_div_ele('dropdown')">
+<span><font color="purple"> 打印 </font></span>
+</div>
+
+
+
+
+
+{% endblock %}

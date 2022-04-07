@@ -1,0 +1,194 @@
+
+{% extends 'base/base2.html' %}
+
+
+{% block css %}
+  <style>
+
+  .box {
+    width: 98%;
+    height: 85px;
+    border: 1px solid black;
+    overflow:hidden
+  }
+
+  .div1{
+    background-color: rgba(96, 16, 255, .1);
+  }
+
+  .div2{
+     background-color: rgba(255, 255, 168, .3);
+  }
+
+  .div3{
+     background-color: rgba(4, 155, 255, .2);
+  }
+
+
+  .second {
+      width: 98%;
+      float:left;
+      height: 100%;
+      /*padding-left:50%;*/
+  }
+  </style>
+{% endblock %} 
+
+
+{% block script %}
+  <script type="text/javascript">
+  function update_table_submit_do(){
+      console.log($('#testform1').serializeArray())
+      var data ={
+          data:JSON.stringify({
+          'dialog_id': this.dialog_id,
+          'form_data': $('#testform1').serializeArray()//.serialize() //.serialize(),// 你的formid
+          })
+      };
+      console.log('data...', data);
+
+      $.ajax({
+          url:'/mix_special_html/test_form_deal',
+          type:'get',
+          data: data,                
+          success:function(res){
+              console.log('成功',res, typeof(res));
+              var x=document.getElementById('lv_dialog');
+              console.log('close...........lv_dialog')
+              x.close();
+
+              $("#"+"rs_"+res["dialog_id"]).text(res["s1"])
+              //document.getElementById("rs_"+res["dialog_id"]).innerHtml = "<h1>Hello World </h1>" //res["s1"];
+              
+          },
+          error:function (res) {
+              console.log('失败',res);
+          }
+      });
+
+  }    
+
+
+  function open_lv_dialog(dialog_id){
+    console.log('dialog_id............', dialog_id);
+    this.dialog_id = dialog_id
+    var x=document.getElementById('lv_dialog');
+    console.log('dialog_id is', this.dialog_id)
+    x.showModal();
+  }
+
+  function hide_lv_dialog(){
+      var x=document.getElementById('lv_dialog');
+      console.log('close...........lv_dialog')
+      x.close();
+  }
+    
+
+  </script>
+{% endblock %}
+
+
+{% block m_content %}
+
+  <!-- <div class="first" id='first1'>
+      <iframe src="https://cloud.seatable.cn/dtable/external-links/58d9c4d5465d413a973c/?tid=fYZP&vid=0000", 
+      height="100%", width="100%" style="border:none;margin-top:0"></iframe>
+  </div> -->
+
+  <dialog id='lv_dialog' style="border-style: none;margin:0 auto;width:400px">
+    <img height="16" width="16" id="close-modal" align="right" onclick="hide_lv_dialog()" src="/static/icons/debian.svg"/>
+
+    <!-- <h3>不一致原因分析</h1> -->
+    <form  id='testform1'  method="get">
+
+        <label for="ageRangeField">是否计算错误，需改进</label>
+        <select name="ageRangeField">
+            <option value="否">否</option>
+            <option value="是">是</option>
+        </select>
+
+        <label for="commentField">原因总结</label>
+        <textarea placeholder="输入不一致原因" name="commentField"></textarea>
+    </form>
+      <br>
+      <button onclick="update_table_submit_do()">提交</button>
+
+  </dialog> 
+
+
+  <div class="second" id="second1">
+  <!--   <font color="purple" ><a onclick="fullscreen_ele_first()"><img height="16" width="16" src="/static/icons/amazons3.svg"/> 放大打印 </font></a>
+    <font color="purple" ><a onclick="reload()"><img height="16" width="16" src="/static/icons/atari.svg"/> 缩小还原 </font></a> -->
+      <form action="/mix_special_html/bin_results_daily_print?day_str=" method="get">
+       <input type="text" maxlength="20" name="day_str" placeholder="日期:XXXX-XX-XX" />  <input type="submit" value="查询" />
+        <br><br>
+      </form>
+
+      <a href="/mix_special_html/download_seatable_reason" style="font-weight: bold;border-radius: .4rem;background: blue;color:white">下载统计不一致原因</a><br><br>
+
+      {% for d in date_list %}
+      <a href="/mix_special_html/bin_results_daily_print?day_str={{d}}">{{d}}</a>&emsp;&emsp;
+      {% endfor %}<br><br>
+
+      <div class="div1">
+
+
+        <h2 style=" border-radius: 20%;" >单类型货物，只有计算与实际不一致</h2>
+        {% for r in res_list %}
+            <div class="box">
+                <!-- <br> -->
+                <a style="color:red;font-weight: bold">{{r.shape_str}}</a>&emsp;&emsp;<a style="color:blue;font-weight: bold">{{r.creater}}</a>
+                &emsp;&emsp;<a style="font-weight: bold;border-radius: .4rem;background: limegreen;color:white"  class="trigger-modal" onclick="open_lv_dialog('{{r.co_no}}')">不一致原因</a><a style="font-weight: bold;border-radius: .4rem;background: red;color:white" id="rs_{{r.co_no}}">{{r.alreason}}</a> <br>
+                <a style="color:green;font-weight: bold">计算:{{r.cal}}</a>&emsp;&emsp;
+                <a style="color:black;font-weight: bold">实际:{{r.real}}</a>&emsp;&emsp;
+                <a style="color:purple;font-weight: bold">计划:{{r.plan}}</a>
+                <br><a style="background: lightgreen;font-weight: bold">{{r.bin_lwh}}</a><a>VS<a style="background: lightgrey;font-weight: bold">{{r.real_bin_lwh}}</a>&emsp;&emsp;&emsp;&emsp;<font style="background: #FFD39B;font-weight: bold;border-radius: .4rem;">{{r.cp_id}}</font>&emsp;<font style="background: #C1CDC1;font-weight: bold;border-radius: .4rem;">{{r.cu_id}}</font>
+                <br>{{r._ctime}}||<a style="background: lightblue">{{r.co_no}}</a>||{{r.to_temperature}}||{{r.sto_id}}||<a style="background: seashell">{{r.s_plan}}</a>||{{r.name}}
+            </div>
+
+        {% endfor %}
+      </div>
+
+
+      <div class="div2">
+      <h2 style="border-radius: 20%;" >多类型货物</h2>
+      {% for r in res_list2 %}
+          <div class="box">
+              <!-- <br> -->
+                <a style="color:red;font-weight: bold">{{r.shape_str}}</a>&emsp;&emsp;<a style="color:blue;font-weight: bold">{{r.creater}}</a>
+                &emsp;&emsp;<a style="font-weight: bold;border-radius: .4rem;background: limegreen;color:white"  class="trigger-modal" onclick="open_lv_dialog('{{r.co_no}}')">不一致原因</a><a style="font-weight: bold;border-radius: .4rem;background: red;color:white"  id="rs_{{r.co_no}}">{{r.alreason}}</a> <br>
+              <a style="color:green;font-weight: bold">计算:{{r.cal}}</a>&emsp;&emsp;
+              <a style="color:black;font-weight: bold">实际:{{r.real}}</a>&emsp;&emsp;
+              <a style="color:purple;font-weight: bold">计划:{{r.plan}}</a>
+              <br><a style="background: lightgreen;font-weight: bold">{{r.bin_lwh}}</a><a>VS<a style="background: lightgrey;font-weight: bold">{{r.real_bin_lwh}}</a>&emsp;&emsp;&emsp;&emsp;<font style="background: #FFD39B;font-weight: bold;border-radius: .4rem;">{{r.cp_id}}</font>&emsp;<font style="background: #C1CDC1;font-weight: bold;border-radius: .4rem;">{{r.cu_id}}</font>
+              <br>{{r._ctime}}||<a style="background: lightblue">{{r.co_no}}</a>||{{r.to_temperature}}||{{r.sto_id}}||<a style="background: seashell">{{r.s_plan}}</a>||{{r.name}}
+          </div>
+      {% endfor %}
+      </div>
+
+      <div class="div3">
+      <h2 style=" border-radius: 20%;" >单类型，计划，计算都和实际不一致</h2>
+      {% for r in res_list3 %}
+          <div class="box">
+              <!-- <br> -->
+                <a style="color:red;font-weight: bold">{{r.shape_str}}</a>&emsp;&emsp;<a style="color:blue;font-weight: bold">{{r.creater}}</a>
+                &emsp;&emsp;<a style="font-weight: bold;border-radius: .4rem;background: limegreen;color:white"  class="trigger-modal" onclick="open_lv_dialog('{{r.co_no}}')">不一致原因</a><a style="font-weight: bold;border-radius: .4rem;background: red;color:white"  id="rs_{{r.co_no}}">{{r.alreason}}</a> <br>
+              <a style="color:green;font-weight: bold">计算:{{r.cal}}</a>&emsp;&emsp;
+              <a style="color:black;font-weight: bold">实际:{{r.real}}</a>&emsp;&emsp;
+              <a style="color:purple;font-weight: bold">计划:{{r.plan}}</a>
+              <br><a style="background: lightgreen;font-weight: bold">{{r.bin_lwh}}</a><a>VS<a style="background: lightgrey;font-weight: bold">{{r.real_bin_lwh}}</a>&emsp;&emsp;&emsp;&emsp;<font style="background: #FFD39B;font-weight: bold;border-radius: .4rem;">{{r.cp_id}}</font>&emsp;<font style="background: #C1CDC1;font-weight: bold;border-radius: .4rem;">{{r.cu_id}}</font>
+              <br>{{r._ctime}}||<a style="background: lightblue">{{r.co_no}}</a>||{{r.to_temperature}}||{{r.sto_id}}||<a style="background: seashell">{{r.s_plan}}</a>||{{r.name}}
+          </div>
+
+      {% endfor %}
+      </div>
+  </div>
+
+
+
+{% endblock %}
+
+
+
+
+

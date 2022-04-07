@@ -1,0 +1,43 @@
+
+{% extends 'base/base2.html' %}
+
+
+{% block css %}
+<style>
+
+
+button {
+  border-radius: 8px;
+  border: none;
+  background-color: #2563eb;
+  color: white;
+  font-size: 18px;
+  padding: 16px 24px;
+  text-align: center;
+}
+
+/* SOLUTION */
+
+button {
+  transition: transform .3s ease-in-out;
+}
+
+button:hover {
+  transform: scale(1.2)
+}
+
+
+</style>
+
+{% endblock %} 
+
+
+
+
+{% block m_content %}
+    <h1>按钮漂浮放大CSS设计</h1><br><br>
+    <button>Transition!</button>
+
+
+{% endblock %}
+

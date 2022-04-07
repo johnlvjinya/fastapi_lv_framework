@@ -1,0 +1,33 @@
+{% extends 'base/base2.html' %}
+
+
+{% block m_content %}
+
+<br><br><br>
+<h3>文件路径:{{real_path}}</h3><hr>
+
+{% for f in log_f_list%}
+<a>{{f}}</a>;
+{% endfor %}
+<hr>
+
+
+{% for f in log_f_list%}
+
+    {% if f in file_url_dict%}
+    <a style="color:red" href="{{file_url_dict[f]}}"><strong>{{f}}</strong></a>;
+    {% else %}
+    <a style="color:blue"><strong>{{f}}</strong></a>;
+    {% endif %}
+
+    {% for line in content_dict[f]%}
+        <p>{{line}}</p>
+    {% endfor %}
+    <br>
+
+
+{% endfor %}
+<hr>
+{% endblock %}
+
+

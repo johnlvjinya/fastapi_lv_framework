@@ -1,0 +1,118 @@
+
+{% extends 'base/base2.html' %}
+
+
+{% block css %}
+<style type="text/css">
+
+dialog {
+  margin-top: 24px;
+  transform: translate(0, 20%);
+  transform-origin: center;
+  border: 0.1rem solid #9b4dca;
+  border-radius: .4rem;
+  padding: 20 1rem;
+  text-align: center;
+
+}
+
+
+</style>
+
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+function update_table_submit_do(){
+    console.log($('#testform1').serializeArray())
+    var data ={
+        data:JSON.stringify({
+        'dialog_id': this.dialog_id,
+        'form_data': $('#testform1').serializeArray()//.serialize() //.serialize(),// 你的formid
+        })
+    };
+    console.log('data...', data);
+
+    $.ajax({
+        url:'/cs_js_pages/test_form_deal',
+        type:'get',
+        data: data,                
+        success:function(res){
+            console.log('成功',res);
+            var x=document.getElementById('lv_dialog');
+            console.log('close...........lv_dialog')
+            x.close();
+            
+        },
+        error:function (res) {
+            console.log('失败',res);
+        }
+    });
+
+}    
+
+
+function open_lv_dialog(dialog_id){
+  console.log('dialog_id............', dialog_id);
+  this.dialog_id = dialog_id
+  var x=document.getElementById('lv_dialog');
+  console.log('dialog_id is', this.dialog_id)
+  x.showModal();
+}
+
+function hide_lv_dialog(){
+    var x=document.getElementById('lv_dialog');
+    console.log('close...........lv_dialog')
+    x.close();
+}
+  
+
+</script>
+{% endblock %}
+
+
+
+{% block m_content %}
+<h1>这里是内容模块. 注意查看console</h1>
+
+<button onclick="open_lv_dialog('dialog_id_is_test')">点我打开dialog</button>
+<dialog id='lv_dialog' style="border-style: none;margin:0 auto;width:400px">
+  <img height="16" width="16" id="close-modal" align="right" onclick="hide_lv_dialog()" src="/static/icons/debian.svg"/>
+
+  <h1>Look at me!</h1>
+  <p>I'm a pop up dialog!</p>
+  <form id='testform1'  method="get">
+      <input type="text" maxlength="20" name="day_str" placeholder="日期:XXXX-XX-XX" />
+
+      <label for="nameField">Name</label>
+      <input type="text" placeholder="CJ Patoilo" name="nameField">
+
+      <label for="ageRangeField">Age Range</label>
+      <select name="ageRangeField">
+          <option value="0-13">0-13</option>
+          <option value="14-17">14-17</option>
+          <option value="18-23">18-23</option>
+          <option value="24+">24+</option>
+      </select>
+
+      <label for="commentField">Comment</label>
+      <textarea placeholder="Hi CJ …" name="commentField"></textarea>
+  </form>
+    <br>
+    <button onclick="update_table_submit_do()">提交</button>
+
+</dialog> 
+
+
+{% for f_id in form_id_list %}
+
+<br><br>
+<button onclick="open_lv_dialog('{{f_id}}')">form_id_{{f_id}}</button><br><br>
+
+{% endfor %}
+
+
+
+{% endblock %}
+
+

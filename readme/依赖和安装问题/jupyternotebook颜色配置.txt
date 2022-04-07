@@ -1,0 +1,16 @@
+修改jupyter主题颜色
+pip install -i https://pypi.douban.com/simple
+pip install --upgrade jupyterthemes 		# 安装
+jt -l # 查看颜色
+jt -t chesterish  # 选择颜色
+
+######颜色列表
+chesterish  # 建议，颜色比较柔和
+grade3
+gruvboxd
+gruvboxl
+monokai
+oceans16
+onedork
+solarizedd
+solarizedl

@@ -1,0 +1,22 @@
+
+{% extends 'base/base2.html' %}
+
+{% block m_content %}
+
+
+{% for ac_f in ac_file_dict%}
+<h3>{{ac_f}}</h3>
+    {% for sub2 in ac_file_dict[ac_f] %}
+        <a style="color:green"><strong>{{sub2}}</strong></a>
+        {% for dir_file in ac_file_dict[ac_f][sub2].files %}
+            <a href="/file_tree/image_data_tree?eco_dir_path={{ac_file_dict[ac_f][sub2].f_path}}&echo2_str={{dir_file.path}}">{{dir_file.name}}</a>&emsp;
+        {% endfor %}<br>
+    {% endfor %}
+<br>
+{% endfor %}
+
+
+
+{% endblock %}
+
+

@@ -1,0 +1,107 @@
+
+{% extends 'base/base2.html' %}
+
+
+{% block css %}
+<style>
+
+button {
+  padding: 20px;
+  color: #ffffff;
+  background-color: #0e79dd;
+  border: none;
+  border-radius: 5px;
+  font-weight: 600;
+}
+
+.popup-modal {
+  padding: 32px 64px;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 10px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform-origin: center;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0%;
+  text-align: center;
+}
+
+.popup-modal p {
+  margin-bottom: 24px
+}
+
+.backdrop {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  background: #000;
+  opacity: 0%;
+}
+
+.popup-modal.show {
+  opacity: 100%;
+  pointer-events: all;
+}
+
+.popup-modal {
+  transition: transform .3s ease-in-out, opacity .4s ease;
+  transform: translate(-50%, -100%);
+}
+
+.popup-modal.show {
+  transform: translate(-50%, -50%);
+}
+
+</style>
+
+{% endblock %} 
+
+
+
+
+{% block m_content %}
+
+<h1>popup-modal弹窗</h1><br><br>
+
+
+
+<div class="popup-modal">
+  <h1>Look at me!</h1>
+  <p>I'm a pop up dialog!</p>
+  <button id="close-modal">Close Modal</button>
+</div>
+
+
+
+<button id="trigger-modal">Open Modal</button>
+
+
+
+{% endblock %}
+
+
+{% block script_foot %}
+<script>
+  const openButton = document.getElementById('trigger-modal');
+  const closeButton = document.getElementById('close-modal');
+  const backdrop = document.getElementById('backdrop')
+
+  function toggleModal() {
+    const modalDiv = document.querySelector('.popup-modal');
+    const backdrop = document.querySelector('.backdrop')
+    modalDiv.classList.toggle('show');
+    backdrop.classList.toggle('show');
+  }
+
+  openButton.addEventListener('click', toggleModal);
+  closeButton.addEventListener('click', toggleModal);
+
+
+
+</script>
+
+
+{% endblock %}

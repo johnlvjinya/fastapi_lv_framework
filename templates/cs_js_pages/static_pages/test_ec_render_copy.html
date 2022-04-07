@@ -1,0 +1,165 @@
+
+{% extends 'base/base2.html' %}
+
+{% block css %}
+<style>
+</style>
+{% endblock %} 
+
+{% block m_content %}
+<p><a style="font-size:26px">&emsp;&emsp;&emsp;&emsp;container_1</a></p>
+<div id="container_1" style="height: 600px"> 
+{% endblock %}
+
+
+
+{% block script_foot %}
+<script>
+// **********************************************************************************************************************
+// 图标类型: bar
+// container_id: 1
+// 数据url:/cs_js_pages/ec_json_path?jpath=templates/cs_js_pages/ec_json_test/bar.json
+// **********************************************************************************************************************
+function get_my_data_1() {
+    var datas= null;//定义一个全局变量
+    $.ajax({
+        type:"GET",
+        url:"/cs_js_pages/ec_json_path?jpath=templates/cs_js_pages/ec_json_test/bar.json",
+        async:false,
+        data:"",
+        success:function(res){
+            // 获取数据并保存至变量
+            // console.log(res)
+            datas = res;
+            }
+        });
+    return datas
+}
+
+var mydata_1 = get_my_data_1();
+console.log(mydata_1);
+var t_color_1 = "black";
+var dom = document.getElementById('container_1');
+var chart_1 = echarts.init(dom);
+var app = {};
+option = null;
+option = {
+    textStyle: {
+      fontFamily: 'times new roman',
+      fontSize:20,
+      color: t_color_1,
+    },
+    
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'cross'
+        },
+        textStyle : {
+            color: 'black',
+            decoration: 'none',
+            fontFamily: 'Verdana, sans-serif',
+            fontSize: 20,
+            // fontStyle: 'italic',
+            // fontWeight: 'bold'
+        },
+    },
+    xAxis: {
+        type: 'category',
+        data: mydata_1.name_list,
+        axisLabel: {
+           show: true,
+            textStyle: {
+              color:function(){return t_color_1;},
+              fontSize : 20      //更改坐标轴文字大小
+            }
+         },
+    },
+    yAxis: {
+        type: 'value',
+        splitLine: {show : false},             
+        axisTick:{ show:true,},   //y轴刻度线
+        axisLine:{ show:true,},    //y轴
+         axisLabel: {
+                textStyle: {
+                    fontSize: 20,
+                    color:  function(){return t_color_1;},
+                }
+          },
+
+
+    },
+
+
+    grid:{
+        x: 100,
+        y: 30,
+        x2: 50,
+        y2: 50
+      },
+    series: [
+    {
+        data: mydata_1.data_list,
+        type: 'bar',
+        color: mydata_1.color,
+        // showBackground: true,
+        // backgroundStyle: {
+        //     color: 'azure'
+        // }        
+    }],
+    // backgroundColor:'white', //设置无背景色    
+    toolbox:{
+            show: true,
+            feature: {
+              myFull: {
+                show: true,
+                title: '全屏',
+                icon: "path://M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z",
+                
+                onclick: (e) => {
+                    if (t_color_1=='white'){
+                        t_color_1 = 'black';
+                    }else{
+                        t_color_1 = 'white';
+                    }
+                  const element = document.getElementById("container_1");
+                  if (element.requestFullScreen) { // HTML W3C 提议
+                        element.requestFullScreen();
+                      } else if (element.msRequestFullscreen) { // IE11
+                        element.msRequestFullScreen();
+                      } else if (element.webkitRequestFullScreen) { // Webkit (works in Safari5.1 and Chrome 15)
+                        element.webkitRequestFullScreen();
+                      } else if (element.mozRequestFullScreen) { // Firefox (works in nightly)
+                        element.mozRequestFullScreen();
+                      }
+                  // 退出全屏
+                  if (element.requestFullScreen) {
+                        document.exitFullscreen();
+                      } else if (element.msRequestFullScreen) {
+                        document.msExitFullscreen();
+                      } else if (element.webkitRequestFullScreen) {
+                        document.webkitCancelFullScreen();
+                      } else if (element.mozRequestFullScreen) {
+                        document.mozCancelFullScreen();
+                      }
+
+
+                },
+              },
+            },
+          },
+
+};
+
+
+if (option && typeof option === "object") {
+    chart_1.setOption(option, true);
+    window.addEventListener("resize",function(){
+        chart_1.resize();
+    });
+
+}
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,120 @@
+
+{% extends 'base/base2.html' %}
+
+
+
+
+{% block m_content %}
+
+<br>
+<!-- <form action="/file_upload/file_upload_post?dir_name={{father_dir}}" method="post" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <input type =submit value="上传文件">
+</form> -->
+
+<form action="/file_upload/file?dir_name={{dir_name}}" enctype="multipart/form-data" method="post">
+<input name="file" type="file">
+<input type="submit" value="单文件上传">
+</form>
+<br>
+<form action="/file_upload/files?dir_name={{dir_name}}" enctype="multipart/form-data" method="post">
+<input name="files" type="file" multiple>
+<input type="submit" value="多文件上传">
+</form>
+<br>
+<form method="POST" action="/file_upload/dir_create?dir_name={{dir_name}}">
+    <input type="text" name="file_dir_name" placeholder="输入文件夹名称" />
+    <input type="submit" value="创建文件夹" />
+</form>
+<!-- <form action="/file_upload/uploadFile?dir_name={{dir_name}}" enctype="multipart/form-data" method="post">
+<input name="file" type="file">
+<input type="submit" value="uploadFile上传">
+</form>
+<form action="/file_upload/uploadfiles?dir_name={{dir_name}}" enctype="multipart/form-data" method="post">
+<input name="files" type="file" multiple>
+<input type="submit" value="uploadfiles上传">
+</form>
+ -->
+
+
+<br><br>
+<a style="color:black;"><strong>当前目录: {{dir_name}}</strong></a>
+{% if father_dir!='' %}
+<a style="color:green;" href="/file_upload/file_upload_dir_one_dir?dir_name={{father_dir}}"><strong>(上级目录:{{father_dir}})</strong></a>
+{% endif%}
+<a href='/file_upload/file_upload_dir_list' style="color:green;"><strong>(根目录)</strong></a>
+<br><br>
+
+
+<a style="color:black;"><strong>已有文件：</strong></a><br>
+<script>
+function delete_eco_f_path(eco_f_path, f_index){
+    console.log(eco_f_path, 'e'+f_index);
+    res = confirm('确认删除?\n\n'+eco_f_path);                 // 确认返回true，否则返回false
+    if(res){
+        // var data ={
+        //     data:JSON.stringify({
+        //     'tb_name': tb_name,
+        //     'tr_id':tr_id,
+        //     'action': 'delete'
+        //     })
+        // };
+        // console.log('delete_tb_name_tr_id........', data);
+        $.ajax({
+            url:'/file_upload/file_delete?dir_name={{dir_name}}&eco_f_path='+eco_f_path,
+            type:'POST',
+            data: '',                
+            success:function(res){
+                console.log('ajax post -delete success')
+                $('a').remove('.e'+f_index);               // 删除所有class为e+f_index的a标签元素
+                $('button').remove('.e'+f_index);               // 
+                console.log(res)
+            },
+            error:function (res) {
+                console.log('ajax post -delete fail')
+            }
+        });
+    }else{
+        console.log('点击了否') 
+    }
+}
+
+
+
+    //拿到input file 上传文件名称，显示到页面中，
+    $(".aFileBtn").on("change","input[type='file']",function(){
+        var filePath=$(this).val();
+        //filePath.indexOf("jpg")!=-1 || filePath.indexOf("png")!=-1
+        if(filePath.length > 0){
+            var arr=filePath.split('\\');
+            var fileName=arr[arr.length-1].split('.')[0];
+           //判断输入框是否包含文字 包含则不设置。不包含则设置上去
+            if($("#title").val()){
+            }else {
+                $("#title").val(fileName);
+            }
+
+        }else{
+            return false
+        }
+    })
+
+</script>
+
+
+{% for f in file_list %}
+
+    {% if f.type=='file' %}
+    <a href="/file_tree/file_str?eco_f_path={{f.eco_f_path}}" class="e{{f.index}}">{{f.name}}</a>
+    <a onclick="delete_eco_f_path('{{f.eco_f_path}}', '{{f.index}}')" class="e{{f.index}}" style="color:red;">-</a>&emsp;&emsp;
+    {% else %}
+    <a href="/file_upload/file_upload_dir_one_dir?dir_name={{f.eco_f_path}}" class="e{{f.index}}" style="color:green;"><strong>{{f.name}}</strong></a>
+    <a onclick="delete_eco_f_path('{{f.eco_f_path}}', '{{f.index}}')" class="e{{f.index}}" style="color:red;">-</a>&emsp;&emsp;
+    {% endif%}
+
+{% endfor%}
+
+
+
+{% endblock %}
+

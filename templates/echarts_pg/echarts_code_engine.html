@@ -1,0 +1,66 @@
+  
+{% extends 'base/base2.html' %}
+
+{% block css %}
+<style>
+  .box {
+    /*text-align: center;*/
+    width: 20%;
+ /*   height: 85px;*/
+    border: 1px solid black;
+    float: left;
+    overflow:hidden;
+    border: 0.1rem solid #9b4dca;
+    border-radius: .4rem;
+    padding: 0.5rem;
+
+  }
+
+  .box2 {
+    /*text-align: center;*/
+    width: 65%;
+ /*   height: 85px;*/
+    border: 1px solid black;
+    float: left;
+    overflow:hidden;
+    border: 0.1rem solid #9b4dca;
+    border-radius: .4rem;
+
+  }
+
+</style>
+{% endblock %}
+
+{% block m_content %}
+<!-- <h1>折线图、柱状图、饼图</h1><br> -->
+
+<div class="box">
+  <form action="/echarts_pg/echarts_code_engine"  method="get">
+    <label for="plt_type">数据地址</label>
+  <input type="text" name="js_data_url" placeholder="js_data_url" /><br>
+
+  <label for="plt_type">容器id</label>
+  <input type="text" name="container_id" placeholder="container_id" /><br>
+
+  <label for="plt_type">图表类型</label>
+  <select name="plt_type">
+      {% for option_x in exist_js_list %}
+      <option value="{{option_x}}">{{option_x}}</option>
+      {% endfor %}
+  </select>
+  &emsp;<input type="submit" value="生成" />
+  </form>
+</div>
+
+<div class="box2">
+<h3>测试数据列表</h3> 
+<a href="/file_tree/file_str?eco_f_path=templates/echarts_pg/basic_echarts_html_downloads.html">下载模板</a>
+{% for j_x in json_test_list %}
+<p><a>{{jp_path_str}}<font style="background: #FFBBFF;border: 0.1rem solid #9b4dca;border-radius: .4rem;">{{j_x}}</font></a></p>
+{% endfor %}
+<br>
+</div>
+
+
+
+{% endblock %}

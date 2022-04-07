@@ -1,0 +1,1072 @@
+
+{% extends 'base/base2.html' %}
+
+{% block css %}
+<style>
+
+  .box {
+    /*text-align: center;*/
+    width: 97.5%;
+ /*   height: 85px;*/
+    border: 1px solid black;
+    float: left;
+    overflow:hidden;
+    border: 0.1rem solid #BEBEBE;
+    border-radius: .4rem;
+    margin-left: 1rem;
+
+  }  
+
+  .box2 {
+    /*text-align: center;*/
+    width: 31.5%;
+ /*   height: 85px;*/
+    border: 1px solid black;
+    float: left;
+    overflow:hidden;
+    border: 0.1rem solid #BEBEBE;
+    border-radius: .4rem;
+    margin-left: 1rem;
+
+  }    
+
+</style>
+{% endblock %} 
+
+{% block m_content %}
+<div class="box">
+<a href='https://tool.oschina.net/commons?type=3' target="_blank">颜色调整</a>
+</div>
+
+<div class="box2">
+    <a><font style="background: #FFBBFF;border-radius: .4rem;font-weight: bold">bar_stack测试</font></a>
+    <div id="container_bar_stack" style="height: 73%"></div>
+</div>
+
+<div class="box2">
+    <a><font style="background: #FFBBFF;border-radius: .4rem;font-weight: bold">pie测试</font></a>
+    <div id="container_test_pie" style="height: 35%"></div>    
+</div>
+
+<div class="box2">
+    <a><font style="background: #FFBBFF;border-radius: .4rem;font-weight: bold">bar测试</font></a>
+    <div id="container_bar1" style="height: 35%"></div> 
+</div>    
+
+<div class="box2">
+    <a><font style="background: #FFBBFF;border-radius: .4rem;font-weight: bold">line测试</font></a>
+    <div id="container_line1" style="height: 35%"></div> 
+</div>    
+
+<div class="box2">
+    <a><font style="background: #FFBBFF;border-radius: .4rem;font-weight: bold">area_stack测试</font></a>
+    <div id="container_area_stack" style="height: 35%"></div> 
+</div>    
+
+<div class="box">
+    <a><font style="background: #FFBBFF;border-radius: .4rem;font-weight: bold">container_line_bars_mix测试</font></a>
+    <div id="container_line_bars_mix" style="height: 35%"></div> 
+</div>
+{% endblock %}
+
+
+{% block script_foot %}
+<script>
+
+
+// **********************************************************************************************************************
+// 图标类型: bar_stack
+// container_id: bar_stack
+// 数据url:/echarts_pg/ecj?d=myutils/test&j=bar_stack.json
+// **********************************************************************************************************************
+
+function get_my_data_bar_stack() {
+    var datas= null;//定义一个全局变量
+    $.ajax({
+        type:"GET",
+        url:"/echarts_pg/ecj?d=myutils/test&j=bar_stack.json",
+        async:false,
+        data:"",
+        success:function(res){
+            // 获取数据并保存至变量
+            console.log('', res)
+            datas = res;
+            }
+        });
+    return datas
+}
+var mydata_bar_stack = get_my_data_bar_stack();
+// console.log(mydata_bar_stack)
+var t_color_bar_stack = "black";
+var dom = document.getElementById('container_bar_stack');
+var chart_bar_stack = echarts.init(dom);
+var app = {};
+option = null;
+
+option = {
+    textStyle: {
+      fontFamily: 'times new roman',
+      fontSize:20,
+      color: function(){return t_color_bar_stack;},
+      
+    },
+    title: {
+        text: ''
+    },
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'cross'
+        },
+        textStyle : {
+            color: 'black',
+            decoration: 'none',
+            fontFamily: 'Verdana, sans-serif',
+            fontSize: 20,
+            // fontStyle: 'italic',
+            // fontWeight: 'bold'
+        },
+    },
+    legend: {
+        icon: 'rectangle',
+        data: mydata_bar_stack.legend_data,
+        right: '4%',
+        padding:[20,0,0,0],   //可设定图例[距上方距离，距右方距离，距下方距离，距左方距离]
+        textStyle: {
+            fontSize: 20,
+            color: function(){return t_color_bar_stack;},
+         }
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    xAxis: [
+        {
+            type: 'category',
+            // boundaryGap: false,
+            data: mydata_bar_stack.xAxis_data,
+            axisLabel: {
+                textStyle: {
+                    fontSize: 20,
+                    color:  function(){return t_color_bar_stack;},
+                }
+            }            
+        }
+    ],
+    yAxis: [
+        {
+            type: 'value',
+            splitLine: {show : false},             
+            axisTick:{ show:true,},   //y轴刻度线
+            axisLine:{ show:true,},    //y轴
+            axisLabel: {
+                textStyle: {
+                    fontSize: 20,
+                    color: function(){return t_color_bar_stack;},
+                }
+            }
+        }
+    ],
+    series: mydata_bar_stack.series,
+    // backgroundColor:'white', //设置无背景色 
+    // backgroundColor:'rgba(0,0,0,0)', //设置无背景色    
+    toolbox:{
+            show: true,
+            feature: {
+              myFull: {
+                show: true,
+                title: '全屏查看',
+                icon: "path://M432.45,595.444c0,2.177-4.661,6.82-11.305,6.82c-6.475,0-11.306-4.567-11.306-6.82s4.852-6.812,11.306-6.812C427.841,588.632,432.452,593.191,432.45,595.444L432.45,595.444z M421.155,589.876c-3.009,0-5.448,2.495-5.448,5.572s2.439,5.572,5.448,5.572c3.01,0,5.449-2.495,5.449-5.572C426.604,592.371,424.165,589.876,421.155,589.876L421.155,589.876z M421.146,591.891c-1.916,0-3.47,1.589-3.47,3.549c0,1.959,1.554,3.548,3.47,3.548s3.469-1.589,3.469-3.548C424.614,593.479,423.062,591.891,421.146,591.891L421.146,591.891zM421.146,591.891",
+
+                onclick: (e) => {
+                    if (t_color_bar_stack=='white'){
+                        t_color_bar_stack = 'black';
+                    }else{
+                        t_color_bar_stack = 'white';
+                    }
+
+                  const element = document.getElementById("container_bar_stack");
+                  if (element.requestFullScreen) { // HTML W3C 提议
+                        element.requestFullScreen();
+                      } else if (element.msRequestFullscreen) { // IE11
+                        element.msRequestFullScreen();
+                      } else if (element.webkitRequestFullScreen) { // Webkit (works in Safari5.1 and Chrome 15)
+                        element.webkitRequestFullScreen();
+                      } else if (element.mozRequestFullScreen) { // Firefox (works in nightly)
+                        element.mozRequestFullScreen();
+                      }
+                  // 退出全屏
+                  if (element.requestFullScreen) {
+                        document.exitFullscreen();
+                      } else if (element.msRequestFullScreen) {
+                        document.msExitFullscreen();
+                      } else if (element.webkitRequestFullScreen) {
+                        document.webkitCancelFullScreen();
+                      } else if (element.mozRequestFullScreen) {
+                        document.mozCancelFullScreen();
+                      }
+
+
+                },
+              }, 
+            }, // feature
+          },  // toolbox
+
+};
+
+
+if (option && typeof option === "object") {
+    chart_bar_stack.setOption(option, true);
+    window.addEventListener("resize",function(){
+        chart_bar_stack.resize();
+    });
+
+}
+
+// **********************************************************************************************************************
+// 图标类型: pie
+// container_id: test_pie
+// 数据url:/echarts_pg/ecj?d=myutils/test&j=pie.json
+// **********************************************************************************************************************
+function get_my_data_test_pie() {
+    var datas= null;//定义一个全局变量
+    $.ajax({
+        type:"GET",
+        url:"/echarts_pg/ecj?d=myutils/test&j=pie.json",
+        async:false,
+        data:"",
+        success:function(res){
+            // 获取数据并保存至变量
+            // console.log(res)
+            datas = res;
+            }
+        });
+    return datas
+}
+
+
+var mydata_test_pie = get_my_data_test_pie();
+console.log(mydata_test_pie);
+var t_color_test_pie = "black";
+var dom = document.getElementById('container_test_pie');
+var chart_test_pie = echarts.init(dom);
+var app = {};
+
+option = null;
+option = {
+    textStyle: {
+        fontSize:20,
+        color: function(){return t_color_test_pie;},
+    },
+
+    tooltip: {
+        trigger: 'item',
+        formatter: '{b} : {c} ({d}%)',
+        textStyle: {
+          // fontFamily: 'times new roman',
+          fontSize:20,
+          color: "black",
+        },
+
+    },
+    // legend: {
+    //     left: 'center',
+    //     top: 'bottom',
+    //     data: mydata_test_pie.name_list
+    // },
+
+    // legend: {
+    //     left: 'center',
+    //     top: 'bottom',        
+    //     icon: 'rectangle',
+    //     data: mydata_test_pie.name_list,
+    //     right: '4%',
+    //     padding:[20,0,0,0],   //可设定图例[距上方距离，距右方距离，距下方距离，距左方距离]
+    //     textStyle: {
+    //         fontSize: 20,
+    //         color: "white"
+    //      }
+    // },
+
+    toolbox: {
+        show: true,
+        feature: {
+            mark: {show: true},
+            dataView: {show: true, readOnly: false},
+            restore: {show: true},
+            saveAsImage: {show: true}
+        }
+    },
+    series: [
+        {
+            name: '占比',
+            type: 'pie',
+            radius: ['25%', '95%'],
+            roseType: 'area',
+            data: mydata_test_pie.data_list
+        }
+    ],
+    // backgroundColor:'rgba(0,0,0,0)', //设置无背景色    
+    toolbox:{
+            show: true,
+            feature: {
+              myFull: {
+                show: true,
+                title: '全屏查看',
+                icon: "path://M432.45,595.444c0,2.177-4.661,6.82-11.305,6.82c-6.475,0-11.306-4.567-11.306-6.82s4.852-6.812,11.306-6.812C427.841,588.632,432.452,593.191,432.45,595.444L432.45,595.444z M421.155,589.876c-3.009,0-5.448,2.495-5.448,5.572s2.439,5.572,5.448,5.572c3.01,0,5.449-2.495,5.449-5.572C426.604,592.371,424.165,589.876,421.155,589.876L421.155,589.876z M421.146,591.891c-1.916,0-3.47,1.589-3.47,3.549c0,1.959,1.554,3.548,3.47,3.548s3.469-1.589,3.469-3.548C424.614,593.479,423.062,591.891,421.146,591.891L421.146,591.891zM421.146,591.891",
+
+                onclick: (e) => {
+                    if (t_color_test_pie=='white'){
+                        t_color_test_pie = 'black';
+                    }else{
+                        t_color_test_pie = 'white';
+                    }
+                    
+                  const element = document.getElementById("container_test_pie");
+                  if (element.requestFullScreen) { // HTML W3C 提议
+                        element.requestFullScreen();
+                      } else if (element.msRequestFullscreen) { // IE11
+                        element.msRequestFullScreen();
+                      } else if (element.webkitRequestFullScreen) { // Webkit (works in Safari5.1 and Chrome 15)
+                        element.webkitRequestFullScreen();
+                      } else if (element.mozRequestFullScreen) { // Firefox (works in nightly)
+                        element.mozRequestFullScreen();
+                      }
+                  // 退出全屏
+                  if (element.requestFullScreen) {
+                        document.exitFullscreen();
+                      } else if (element.msRequestFullScreen) {
+                        document.msExitFullscreen();
+                      } else if (element.webkitRequestFullScreen) {
+                        document.webkitCancelFullScreen();
+                      } else if (element.mozRequestFullScreen) {
+                        document.mozCancelFullScreen();
+                      }
+
+
+                },
+              },
+            },
+          },
+
+};
+
+
+if (option && typeof option === "object") {
+    chart_test_pie.setOption(option, true);
+    window.addEventListener("resize",function(){
+        chart_test_pie.resize();
+    });
+
+}
+
+
+
+// **********************************************************************************************************************
+// 图标类型: bar_group
+// container_id: bar1
+// 数据url:/echarts_pg/ecj?d=myutils/test&j=bar.json
+// **********************************************************************************************************************
+
+function get_my_data_bar1() {
+    var datas= null;//定义一个全局变量
+    $.ajax({
+        type:"GET",
+        url:"/echarts_pg/ecj?d=myutils/test&j=bar.json",
+        async:false,
+        data:"",
+        success:function(res){
+            // 获取数据并保存至变量
+            // console.log(res)
+            datas = res;
+            }
+        });
+    return datas
+}
+var mydata_bar1 = get_my_data_bar1();
+console.log(mydata_bar1);
+var t_color_bar1 = "black";
+var dom = document.getElementById('container_bar1');
+var chart_bar1 = echarts.init(dom);
+var app = {};
+option = null;
+option = {
+    textStyle: {
+      fontFamily: 'times new roman',
+      fontSize:20,
+      color:function(){return t_color_bar1;},
+    },
+
+    title: {
+        text: ''
+    },
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'cross',
+            label: {
+                backgroundColor: '#6a7985'
+            }
+        }
+    },
+    legend: {
+        // left: 'center',
+        // top: 'bottom',         
+        icon: 'rectangle',
+        data: mydata_bar1.legend_data,
+        right: '4%',
+        padding:[20,0,0,0],   //可设定图例[距上方距离，距右方距离，距下方距离，距左方距离]
+        textStyle: {
+            fontSize: 20,
+            color: function(){},
+         }
+    },
+
+    toolbox: {
+        show: true,
+        orient: 'vertical',
+        left: 'right',
+        top: 'center',
+        feature: {
+            mark: {show: true},
+            dataView: {show: true, readOnly: false},
+            magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+            restore: {show: true},
+            saveAsImage: {show: true}
+        }
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    xAxis: [
+        {
+            type: 'category',
+            axisTick: true,
+            data: mydata_bar1.xAxis_data,
+            axisLabel: {
+                textStyle: {
+                    fontSize: 20,
+                    color:  function(){return t_color_bar1;},
+                }
+            },
+        }
+    ],
+    yAxis: [
+        {
+            type: 'value',
+            axisLabel: {
+                textStyle: {
+                    fontSize: 20,
+                    color: function(){return t_color_bar1;},
+                }
+            },
+            splitLine: {show : false},             
+            axisTick:{ //y轴刻度线
+                show:true,
+            },
+            axisLine:{ //y轴
+                show:true,
+            },
+        }
+    ],
+    series: mydata_bar1.series,
+    // backgroundColor:'white', //设置无背景色    
+    toolbox:{
+            show: true,
+            feature: {
+              myFull: {
+                show: true,
+                title: '全屏查看',
+                icon: "path://M432.45,595.444c0,2.177-4.661,6.82-11.305,6.82c-6.475,0-11.306-4.567-11.306-6.82s4.852-6.812,11.306-6.812C427.841,588.632,432.452,593.191,432.45,595.444L432.45,595.444z M421.155,589.876c-3.009,0-5.448,2.495-5.448,5.572s2.439,5.572,5.448,5.572c3.01,0,5.449-2.495,5.449-5.572C426.604,592.371,424.165,589.876,421.155,589.876L421.155,589.876z M421.146,591.891c-1.916,0-3.47,1.589-3.47,3.549c0,1.959,1.554,3.548,3.47,3.548s3.469-1.589,3.469-3.548C424.614,593.479,423.062,591.891,421.146,591.891L421.146,591.891zM421.146,591.891",
+
+                onclick: (e) => {
+                  const element = document.getElementById("container_bar1");
+                    if (t_color_bar1=='white'){
+                        t_color_bar1 = 'black';
+                    }else{
+                        t_color_bar1 = 'white';
+                    }
+                  
+                  if (element.requestFullScreen) { // HTML W3C 提议
+                        element.requestFullScreen();
+                      } else if (element.msRequestFullscreen) { // IE11
+                        element.msRequestFullScreen();
+                      } else if (element.webkitRequestFullScreen) { // Webkit (works in Safari5.1 and Chrome 15)
+                        element.webkitRequestFullScreen();
+                      } else if (element.mozRequestFullScreen) { // Firefox (works in nightly)
+                        element.mozRequestFullScreen();
+                      }
+                  // 退出全屏
+                  if (element.requestFullScreen) {
+                        document.exitFullscreen();
+                      } else if (element.msRequestFullScreen) {
+                        document.msExitFullscreen();
+                      } else if (element.webkitRequestFullScreen) {
+                        document.webkitCancelFullScreen();
+                      } else if (element.mozRequestFullScreen) {
+                        document.mozCancelFullScreen();
+                      }
+
+
+                },
+              },
+            },
+          },
+
+};
+
+
+if (option && typeof option === "object") {
+    chart_bar1.setOption(option, true);
+    window.addEventListener("resize",function(){
+        chart_bar1.resize();
+    });
+
+}
+
+
+// **********************************************************************************************************************
+// 图标类型: multi_line
+// container_id: line1
+// 数据url:/echarts_pg/ecj?d=myutils/test&j=line.json
+// **********************************************************************************************************************
+function get_my_data_line1() {
+    var datas= null;//定义一个全局变量
+    $.ajax({
+        type:"GET",
+        url:"/echarts_pg/ecj?d=myutils/test&j=line.json",
+        async:false,
+        data:"",
+        success:function(res){
+            // 获取数据并保存至变量
+            // console.log(res)
+            datas = res;
+            }
+        });
+    return datas
+}
+var mydata_line1 = get_my_data_line1();
+console.log(mydata_line1);
+var t_color_line1 = "black";
+var dom = document.getElementById('container_line1');
+var chart_line1 = echarts.init(dom);
+var app = {};
+option = null;
+option = {
+    textStyle: {
+      fontFamily: 'times new roman',
+      fontSize:20,
+      color:function(){return t_color_line1;},
+    },
+    
+    title: {
+        text: ''
+    },
+    tooltip: {
+        trigger: 'axis',
+    },
+    // legend: {
+    //     data: mydata_line1.legend_data,
+    //     right: '4%',
+    //     padding:[20,0,0,0],   //可设定图例[距上方距离，距右方距离，距下方距离，距左方距离]
+    //     textStyle: {
+    //         fontSize: 20,
+    //         color:function(){return t_color_line1;},
+    //      }
+
+    // },
+
+    legend: {
+        icon: 'line',
+        data: mydata_line1.legend_data,
+        right: '4%',
+        padding:[20,0,0,0],   //可设定图例[距上方距离，距右方距离，距下方距离，距左方距离]
+        textStyle: {
+            fontSize: 20,
+            color: function(){return t_color_line1;},
+         }
+    },
+
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    xAxis: [
+        {
+            type: 'category',
+            axisTick: false,
+            data: mydata_line1.xAxis_data,
+            axisLabel: {
+                textStyle: {
+                    fontSize: 20,
+                    color: function(){return t_color_line1;},
+                }
+            }, 
+            axisLine:{ //y轴
+                show:true,
+            },  
+
+        }
+    ],
+    yAxis: [
+        {
+            type: 'value',
+            axisLabel: {
+                textStyle: {
+                    fontSize: 20,
+                    color: function(){return t_color_line1;},
+                }
+            },
+            splitLine: {show : false},             
+            axisTick:{ //y轴刻度线
+                show:true,
+            },
+            axisLine:{ //y轴
+                show:true,
+            },
+
+        }
+    ],
+    series: mydata_line1.series,
+    // backgroundColor:'white', //设置无背景色    
+    toolbox:{
+            show: true,
+            feature: {
+              myFull: {
+                show: true,
+                title: '全屏查看',
+                icon: "path://M432.45,595.444c0,2.177-4.661,6.82-11.305,6.82c-6.475,0-11.306-4.567-11.306-6.82s4.852-6.812,11.306-6.812C427.841,588.632,432.452,593.191,432.45,595.444L432.45,595.444z M421.155,589.876c-3.009,0-5.448,2.495-5.448,5.572s2.439,5.572,5.448,5.572c3.01,0,5.449-2.495,5.449-5.572C426.604,592.371,424.165,589.876,421.155,589.876L421.155,589.876z M421.146,591.891c-1.916,0-3.47,1.589-3.47,3.549c0,1.959,1.554,3.548,3.47,3.548s3.469-1.589,3.469-3.548C424.614,593.479,423.062,591.891,421.146,591.891L421.146,591.891zM421.146,591.891",
+
+                onclick: (e) => {
+                    if (t_color_line1=='white'){
+                        t_color_line1 = 'black';
+                    }else{
+                        t_color_line1 = 'white';
+                    }
+                  
+                  const element = document.getElementById("container_line1");
+                  if (element.requestFullScreen) { // HTML W3C 提议
+                        element.requestFullScreen();
+                      } else if (element.msRequestFullscreen) { // IE11
+                        element.msRequestFullScreen();
+                      } else if (element.webkitRequestFullScreen) { // Webkit (works in Safari5.1 and Chrome 15)
+                        element.webkitRequestFullScreen();
+                      } else if (element.mozRequestFullScreen) { // Firefox (works in nightly)
+                        element.mozRequestFullScreen();
+                      }
+                  // 退出全屏
+                  if (element.requestFullScreen) {
+                        document.exitFullscreen();
+                      } else if (element.msRequestFullScreen) {
+                        document.msExitFullscreen();
+                      } else if (element.webkitRequestFullScreen) {
+                        document.webkitCancelFullScreen();
+                      } else if (element.mozRequestFullScreen) {
+                        document.mozCancelFullScreen();
+                      }
+
+
+                },
+              },
+            },
+          },
+
+};
+
+
+if (option && typeof option === "object") {
+    chart_line1.setOption(option, true);
+    window.addEventListener("resize",function(){
+        chart_line1.resize();
+    });
+
+}
+
+
+
+
+
+
+// **********************************************************************************************************************
+// 图标类型: area_stack
+// container_id: area_stack
+// 数据url:/echarts_pg/ecj?d=myutils/test&j=area_stack.json
+// **********************************************************************************************************************
+function get_my_data_area_stack() {
+    var datas= null;//定义一个全局变量
+    $.ajax({
+        type:"GET",
+        url:"/echarts_pg/ecj?d=myutils/test&j=area_stack.json",
+        async:false,
+        data:"",
+        success:function(res){
+            // 获取数据并保存至变量
+            // console.log(res)
+            datas = res;
+            }
+        });
+    return datas
+}
+var mydata_area_stack = get_my_data_area_stack();
+console.log(mydata_area_stack)
+var t_color_area_stack = "black";
+
+var dom = document.getElementById('container_area_stack');
+var chart_area_stack = echarts.init(dom);
+var app = {};
+option = null;
+
+option = {
+
+    textStyle: {
+      fontFamily: 'times new roman',
+      fontSize:20,
+      color:t_color_area_stack,
+    },
+    
+    title: {
+        text: ''
+    },
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'cross'
+        },
+        textStyle : {
+            color: 'black',
+            decoration: 'none',
+            fontFamily: 'Verdana, sans-serif',
+            fontSize: 20,
+            // fontStyle: 'italic',
+            // fontWeight: 'bold'
+        },
+    },
+    legend: {
+        data: mydata_area_stack.legend_data,
+        textStyle: {
+            fontSize: 20,
+            color:function(){return t_color_line1;},
+         }
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    xAxis: [
+        {
+            type: 'category',
+            boundaryGap: false,
+            data: mydata_area_stack.xAxis_data,
+            axisLabel: {
+                textStyle: {
+                    fontSize: 20,
+                    color:  function(){return t_color_area_stack;},
+                }
+            },            
+        }
+    ],
+    yAxis: [
+        {
+            type: 'value',
+            axisLabel: {
+                textStyle: {
+                    fontSize: 20,
+                    color:  function(){return t_color_area_stack;},
+                }
+            },             
+        }
+    ],
+    series: mydata_area_stack.series,
+    // backgroundColor:'white', //设置无背景色    
+    toolbox:{
+            show: true,
+            feature: {
+              myFull: {
+                show: true,
+                title: '全屏',
+                icon: "path://M432.45,595.444c0,2.177-4.661,6.82-11.305,6.82c-6.475,0-11.306-4.567-11.306-6.82s4.852-6.812,11.306-6.812C427.841,588.632,432.452,593.191,432.45,595.444L432.45,595.444z M421.155,589.876c-3.009,0-5.448,2.495-5.448,5.572s2.439,5.572,5.448,5.572c3.01,0,5.449-2.495,5.449-5.572C426.604,592.371,424.165,589.876,421.155,589.876L421.155,589.876z M421.146,591.891c-1.916,0-3.47,1.589-3.47,3.549c0,1.959,1.554,3.548,3.47,3.548s3.469-1.589,3.469-3.548C424.614,593.479,423.062,591.891,421.146,591.891L421.146,591.891zM421.146,591.891",
+
+                onclick: (e) => {
+                    if (t_color_area_stack=='white'){
+                        t_color_area_stack = 'black';
+                    }else{
+                        t_color_area_stack = 'white';
+                    }
+                    
+                  const element = document.getElementById("container_area_stack");
+                  if (element.requestFullScreen) { // HTML W3C 提议
+                        element.requestFullScreen();
+                      } else if (element.msRequestFullscreen) { // IE11
+                        element.msRequestFullScreen();
+                      } else if (element.webkitRequestFullScreen) { // Webkit (works in Safari5.1 and Chrome 15)
+                        element.webkitRequestFullScreen();
+                      } else if (element.mozRequestFullScreen) { // Firefox (works in nightly)
+                        element.mozRequestFullScreen();
+                      }
+                  // 退出全屏
+                  if (element.requestFullScreen) {
+                        document.exitFullscreen();
+                      } else if (element.msRequestFullScreen) {
+                        document.msExitFullscreen();
+                      } else if (element.webkitRequestFullScreen) {
+                        document.webkitCancelFullScreen();
+                      } else if (element.mozRequestFullScreen) {
+                        document.mozCancelFullScreen();
+                      }
+
+
+                },
+              },
+            },
+          },
+
+};
+
+
+if (option && typeof option === "object") {
+    chart_area_stack.setOption(option, true);
+    window.addEventListener("resize",function(){
+        chart_area_stack.resize();
+    });
+
+}
+// **********************************************************************************************************************************************************
+
+
+
+
+
+// **********************************************************************************************************************
+// 图标类型: line_bars_mix
+// container_id: line_bars_mix
+// 数据url:/echarts_pg/ecj?d=myutils/test&j=line_bars_mix.json
+// **********************************************************************************************************************
+function get_my_data_line_bars_mix() {
+    var datas= null;//定义一个全局变量
+    $.ajax({
+        type:"GET",
+        url:"/echarts_pg/ecj?d=myutils/test&j=line_bars_mix.json",
+        async:false,
+        data:"",
+        success:function(res){
+            // 获取数据并保存至变量
+            // console.log(res)
+            datas = res;
+            }
+        });
+    return datas
+}
+var mydata_line_bars_mix = get_my_data_line_bars_mix();
+console.log(mydata_line_bars_mix);
+var t_color_line_bars_mix = "black";
+console.log(t_color_line_bars_mix);
+var dom = document.getElementById('container_line_bars_mix');
+var chart_line_bars_mix = echarts.init(dom);
+var app = {};
+option = null;
+option = {
+    textStyle: {
+      fontFamily: 'times new roman',
+      fontSize:20,
+      color:function(){return t_color_line_bars_mix;},
+
+    },
+
+    title: {
+        text: ''
+    },
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'cross'
+        },
+        // textStyle : {
+        //     color: 'black',
+        //     decoration: 'none',
+        //     fontFamily: 'Verdana, sans-serif',
+        //     fontSize: 20,
+        //     // fontStyle: 'italic',
+        //     // fontWeight: 'bold'
+        // },
+    },
+    // legend: {
+    //     data: mydata_line_bars_mix.legend_data
+    // },
+    legend: {
+        // left: 'center',
+        // top: 'bottom',         
+        icon: 'rectangle',
+        data: mydata_line_bars_mix.legend_data,
+        right: '4%',
+        padding:[20,0,0,0],   //可设定图例[距上方距离，距右方距离，距下方距离，距左方距离]
+        textStyle: {
+            fontSize: 20,
+            color: function(){},
+         }
+    },
+
+
+    toolbox: {
+        show: true,
+        orient: 'vertical',
+        left: 'right',
+        top: 'center',
+        feature: {
+            mark: {show: true},
+            dataView: {show: true, readOnly: false},
+            magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+            restore: {show: true},
+            saveAsImage: {show: true}
+        }
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    xAxis: [
+        {
+            type: 'category',
+            data: mydata_line_bars_mix.xAxis_data,
+            axisLabel: {
+                textStyle: {
+                    fontSize: 20,
+                    color: function(){return t_color_line_bars_mix;},
+                }
+            }, 
+            axisLine:{ //y轴
+                show:true,
+            },          
+        }
+    ],
+    yAxis: [
+        {
+            type: 'value',
+            axisLabel: {
+                textStyle: {
+                    fontSize: 20,
+                    color: function(){return t_color_line_bars_mix;},
+                }
+            },
+            splitLine: {show : false},             
+            axisTick:{ //y轴刻度线
+                show:true,
+            },
+            axisLine:{ //y轴
+                show:true,
+            },
+
+        },
+        {
+            type: 'value',
+            axisLabel: {
+                textStyle: {
+                    fontSize: 20,
+                    color:  function(){return t_color_line_bars_mix;},
+                }
+            },
+            axisTick:{ //y轴刻度线
+                show:true,
+            },
+            axisLine:{ //y轴
+                show:true,
+            },
+
+
+            splitLine: {show : false},            
+            // name: '次坐标',
+            // min: 0,
+            // max: 25,
+            // interval: 5,
+            // axisLabel: {
+            //     formatter: '{value} °C'
+            // }
+        }
+    ],
+    
+    series: mydata_line_bars_mix.series,
+    // backgroundColor:'white', //设置无背景色    
+    toolbox:{
+            show: true,
+            feature: {
+              myFull: {
+                show: true,
+                title: '全屏',
+                icon: "path://M432.45,595.444c0,2.177-4.661,6.82-11.305,6.82c-6.475,0-11.306-4.567-11.306-6.82s4.852-6.812,11.306-6.812C427.841,588.632,432.452,593.191,432.45,595.444L432.45,595.444z M421.155,589.876c-3.009,0-5.448,2.495-5.448,5.572s2.439,5.572,5.448,5.572c3.01,0,5.449-2.495,5.449-5.572C426.604,592.371,424.165,589.876,421.155,589.876L421.155,589.876z M421.146,591.891c-1.916,0-3.47,1.589-3.47,3.549c0,1.959,1.554,3.548,3.47,3.548s3.469-1.589,3.469-3.548C424.614,593.479,423.062,591.891,421.146,591.891L421.146,591.891zM421.146,591.891",
+
+                onclick: (e) => {
+                    if (t_color_line_bars_mix=='white'){
+                        t_color_line_bars_mix = 'black';
+                    }else{
+                        t_color_line_bars_mix = 'white';
+                    }
+                  
+                  console.log(t_color_line_bars_mix);
+                  const element = document.getElementById("container_line_bars_mix");
+                  if (element.requestFullScreen) { // HTML W3C 提议
+                        element.requestFullScreen();
+                      } else if (element.msRequestFullscreen) { // IE11
+                        element.msRequestFullScreen();
+                      } else if (element.webkitRequestFullScreen) { // Webkit (works in Safari5.1 and Chrome 15)
+                        element.webkitRequestFullScreen();
+                      } else if (element.mozRequestFullScreen) { // Firefox (works in nightly)
+                        element.mozRequestFullScreen();
+                      }
+                  // 退出全屏
+                  if (element.requestFullScreen) {
+                        document.exitFullscreen();
+                      } else if (element.msRequestFullScreen) {
+                        document.msExitFullscreen();
+                      } else if (element.webkitRequestFullScreen) {
+                        document.webkitCancelFullScreen();
+                      } else if (element.mozRequestFullScreen) {
+                        document.mozCancelFullScreen();
+                      }
+
+
+                },
+              },
+            },
+          },
+
+};
+
+
+if (option && typeof option === "object") {
+    chart_line_bars_mix.setOption(option, true);
+    window.addEventListener("resize",function(){
+        chart_line_bars_mix.resize();
+    });
+
+}
+
+
+
+</script>
+{% endblock %}  

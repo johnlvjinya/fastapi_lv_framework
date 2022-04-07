@@ -1,0 +1,25 @@
+pip3.7 install -i https://pypi.douban.com/simple fastapi==0.73.0
+pip3.7 install -i https://pypi.douban.com/simple impyla==0.17.0
+pip3.7 install -i https://pypi.douban.com/simple matplotlib==3.5.1
+pip3.7 install -i https://pypi.douban.com/simple numpy==1.21.4
+pip3.7 install -i https://pypi.douban.com/simple pandas==1.3.5
+pip3.7 install -i https://pypi.douban.com/simple pydantic==1.8.2
+pip3.7 install -i https://pypi.douban.com/simple pyface==7.3.0
+pip3.7 install -i https://pypi.douban.com/simple PyMySQL==1.0.2
+pip3.7 install -i https://pypi.douban.com/simple redis==4.0.2
+pip3.7 install -i https://pypi.douban.com/simple requests==2.26.0
+pip3.7 install -i https://pypi.douban.com/simple seaborn==0.11.2
+pip3.7 install -i https://pypi.douban.com/simple starlette==0.16.0
+pip3.7 install -i https://pypi.douban.com/simple uvicorn==0.16.0
+pip3.7 install -i https://pypi.douban.com/simple jinja2
+pip3.7 install -i https://pypi.douban.com/simple jinja2 python-multipart
+pip3.7 install -i https://pypi.douban.com/simple apscheduler==3.8.1
+pip3.7 install -i https://pypi.douban.com/simple jinja2 openpyxl
+
+pip install -i https://pypi.douban.com/simple jupyter notebook
+pip3.7 install -i https://pypi.douban.com/simple --upgrade jupyterthemes 
+
+pip3.7 install -i https://pypi.douban.com/simple seatable-api
+pip3.7 install -i https://pypi.douban.com/simple jinja2 colour
+pip3.7 install -i https://pypi.douban.com/simple APScheduler==3.8.1
+pip3.7 install -i https://pypi.douban.com/simple docxtpl

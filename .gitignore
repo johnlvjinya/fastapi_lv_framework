@@ -1,0 +1,7 @@
+
+__pycache__/
+**/__pycache__/
+**/*.pyc
+test.xlsx
+**/test_output/
+myutils/test/

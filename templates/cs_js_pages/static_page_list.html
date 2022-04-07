@@ -1,0 +1,15 @@
+
+{% extends 'base/base2.html' %}
+
+{% block m_content %}
+
+
+    {% for x in page_dict_list%}
+    <div class="box">
+        <a style="font-weight: bold;color:black;">{{x.name}}:</a> <a href="/cs_js_pages/static_page?page_name={{x.html_name}}">进入</a>
+    </div>
+
+    {% endfor %}
+
+
+{% endblock %}

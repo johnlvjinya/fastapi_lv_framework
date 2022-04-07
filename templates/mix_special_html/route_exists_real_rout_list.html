@@ -1,0 +1,64 @@
+
+{% extends 'base/base2.html' %}
+
+
+{% block css %}
+<style>
+
+  .box {
+    /*text-align: center;*/
+    width: 97.5%;
+ /*   height: 85px;*/
+    border: 1px solid black;
+    float: left;
+    overflow:hidden;
+    border: 0.1rem solid #BEBEBE;
+    border-radius: .4rem;
+    margin-left: 1rem;
+
+  }  
+
+
+  .box2 {
+    /*text-align: center;*/
+    width: 18%;
+ /*   height: 85px;*/
+    border: 1px solid black;
+    float: left;
+    overflow:hidden;
+    border: 0.1rem solid #D15FEE;
+    border-radius: .4rem;
+    margin-left: 1rem;
+
+  }    
+
+</style>
+
+
+{% endblock %} 
+
+
+
+
+{% block m_content %}
+
+  {% for k in new_list %}
+  <div class="box2">
+    <a  href="/mix_special_html/route_report?se_str={{k.from_to_cn}}" ><font style="font-weight: bold">{{k.from_to_cn}}</font></a>
+
+    <font style="background:limegreen;border-radius: .4rem;">{{k.order_num}}</font>
+    <a href="/mix_special_html/download_region_pickle_excel?region_pickle={{k.from_to_en}}.pickle"><font style="font-weight: bold">T</font></a>
+
+  </div>
+
+  {% endfor %}
+
+
+
+
+{% endblock %}
+
+
+
+
+

@@ -1,0 +1,13 @@
+
+algori_bin:箱子计算
+algori_dispatch:派单和排线
+algori_route:路由计算
+api: fastapi接口模块
+
+data:存放数据
+data_offline:下载离线数据
+log:存放信息和资料
+test:测试文件
+
+algorithm_service.py：fastapi主程序
+config.py：配置文件

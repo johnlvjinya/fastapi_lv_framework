@@ -1,0 +1,92 @@
+
+参考：
+https://blog.csdn.net/zhuxian2009/article/details/100149759
+
+############# 首先测试查询，发现fc-list :lang=zh是没有字体的
+fc-list :lang=zh
+fc-list
+
+#######下载字体simhei.ttf
+
+#######将simhei.ttf上传到某个目录下如:   
+/mnt/app/ss_data/data_excel
+
+##### 进入目录
+cd /mnt/app/ss_data/data_excel
+
+#### 进入centos的fonts和目录
+(如果没有就需要安装yum -y install fontconfig）参考https://www.jianshu.com/p/d3a4b5cf8f90
+
+cd /user/share      ####### 可能不行，需要返回上一级，找到usr,share
+
+##### 在fonts目录下新建文件夹，将字体移入后修改文件夹权限：
+cd fonts
+sudo mkdir chinese
+sudo mv /mnt/app/ss_data/data_excel/simhei.ttf chinese/
+
+### 查看是否移动成功
+cd chinese
+ls
+
+chmod -R 755 /usr/share/fonts/chinese    #### 这一步执行错了，先跳过
+
+############# vim打开fonts.conf
+vim  /etc/fonts/fonts.conf
+
+############# vim的常见操作
+入编辑器后，我们先按"I”，即切换到“插入”状态。
+:w      //按【:w】 保存文件
+
+vim被锁定了："ctrl+q"或者"command+q"
+退出:q!+enter
+
+1.在编辑模式下编辑文件 
+2.按下ESC键，退出编辑模式，切换到命令模式。 
+3.在命令模式下键入"ZZ"或者":wq"保存修改并且退出 vim。 
+4.如果只想保存文件，则键入":w"，回车后底行会提示写入操作结果，并保持停留在命令模式。
+
+#########再次查询中文
+fc-list :lang=zh
+
+###### 进入python3.7找到matplotlib的安装目录
+import matplotlib
+print(matplotlib.matplotlib_fname())
+
+########### 复制下来，本次为
+/mnt/app/my_install/python3.7.7/lib/python3.7/site-packages/matplotlib/mpl-data/matplotlibrc
+
+### 退出Python
+quit()
+
+###### 再次上传一份simhei.ttf字体到/mnt/app/ss_data/data_excel/目录下
+
+######### 上传字体包到这个目录
+sudo mv /mnt/app/ss_data/data_excel/simhei.ttf /mnt/app/my_install/python3.7.7/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/
+
+### 进入目录
+cd /mnt/app/my_install/python3.7.7/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf/
+
+### ls查看，发现已经上传成功
+
+
+###### 修改matplotlib配置文件（本次失败，暂时跳过），注意本次是
+vim /mnt/app/my_install/python3.7.7/lib/python3.7/site-packages/matplotlib/mpl-data/matplotlibrc
+
+################# vim操作（参考：https://blog.csdn.net/zhuxian2009/article/details/100149759
+<1> 查找并删除font.family和font.sans-serif两行前的       ### 方法是vim查找： ？font.family
+<2> 并在font.sans-serif后添加中文字体Microsoft YaHei, …(其余不变)
+<3> axes.unicode_minus  : False；使其值为False；否则无法显示负号
+删除.matplotlib/cache里面的两个缓存字体文件
+################# 上面都没有去做，Python种应该有设置的
+
+### 返回根目录
+cd /
+
+4.    重启python
+
+
+
+
+
+
+

@@ -1,0 +1,19 @@
+
+{% extends 'base/base2.html' %}
+
+{% block m_content %}
+
+<a href="/file_tree/tree?eco_dir_path={{father_tree}}" style="color:green;font-weight:bold;font-size:14">{{father_tree}}</a>
+&emsp;&emsp;
+<a style="color:black;font-weight:bold;font-size:14">{{real_path}}</a>
+
+{% for k in name_class_dict %}
+    <p><a style="color:black;font-weight:bold">{{k}}</a></p>
+    {% for fi in name_class_dict[k]-%}
+        <a href="/file_tree/file_str?eco_f_path={{fi.final_path}}" style="background: {{fi.bg_color}};color:black;border-radius: .4rem;">{{fi.final_name}}</a>&emsp;
+    {% endfor -%}
+
+{% endfor %}
+
+{% endblock %}
+

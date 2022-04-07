@@ -1,0 +1,20 @@
+
+{% extends 'base/base2.html' %}
+
+{% block m_content %}
+
+<h3>接受上传的文件目录</h3><br>
+
+{% for p1 in res_dict %}
+<a href="/file_upload/file_upload_dir_one_dir?dir_name={{res_dict[p1].f_dir}}" style="color:green;font-weight: bold">{{p1}}</a>
+    {% for p2 in res_dict[p1] %}
+        {% for p3 in res_dict[p1][p2]%}
+            <a href="/file_upload/file_upload_dir_one_dir?dir_name={{p3.dir_t_path}}">{{p3.dir_names}}</a>&emsp;
+        {% endfor%}<br>
+    {% endfor%}
+<br>
+{% endfor%}
+
+
+{% endblock %}
+

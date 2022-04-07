@@ -1,0 +1,62 @@
+{% extends 'base/base2.html' %}
+
+{% block css %}
+<style>
+  .box {
+    /*text-align: center;*/
+    width: 97.5%;
+ /*   height: 85px;*/
+    border: 1px solid black;
+    float: left;
+    overflow:hidden;
+    border: 0.1rem solid #BEBEBE;
+    border-radius: .4rem;
+    margin-left: 1rem;
+
+  }  
+
+  .box2 {
+    /*text-align: center;*/
+    width: 48%;
+ /*   height: 85px;*/
+    border: 1px solid black;
+    float: left;
+    overflow:hidden;
+    border: 0.1rem solid #BEBEBE;
+    border-radius: .4rem;
+    margin-left: 1rem;
+
+  }   
+
+</style>
+{% endblock %} 
+
+{% block m_content %}
+
+
+<div class="box2">
+<a><font style="background: #FFBBFF;border-radius: .4rem;font-weight: bold">柱状图</font></a>
+<a href="#" target="_blank"><font style="background:#FFE1FF;border-radius: .4rem;">测试2</font></a>
+<div id="container_c1" style="height: 600px"></div>
+</div>
+
+<div class="box2">
+<a><font style="background: #FFBBFF;border-radius: .4rem;font-weight: bold">堆积图</font></a>
+<a href="#" target="_blank"><font style="background:#FFE1FF;border-radius: .4rem;">测试2</font></a>
+<div id="container_c2" style="height: 600px"></div>
+</div>
+
+<div class="box2">
+<a><font style="background: #FFBBFF;border-radius: .4rem;font-weight: bold">饼图</font></a>
+<a href="#" target="_blank"><font style="background:#FFE1FF;border-radius: .4rem;">测试2</font></a>
+<div id="container_c3" style="height: 600px"></div>
+</div>
+
+
+{% endblock %}
+
+
+{% block script_foot %}
+<script src="/static/js_ec_engine/test001.js"></script></div>
+
+{% endblock %}

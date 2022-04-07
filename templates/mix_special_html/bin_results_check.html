@@ -1,0 +1,98 @@
+
+{% extends 'base/base2.html' %}
+
+
+{% block css %}
+<style>
+
+.box {
+  width: 47%;
+  height: 200px;
+  border: 1px solid black;
+  overflow:hidden
+  /*background-color: rgba(96, 139, 168, .1);*/
+}
+
+.div1{
+  float:left;
+  width:32%; 
+  background-color: rgba(96, 16, 255, .1);
+}
+
+.div2{
+   width:32%;
+   float:left;
+   background-color: rgba(255, 255, 168, .3);
+}
+
+.div3{
+   width:32%;
+   float:left;
+   background-color: rgba(4, 155, 255, .2);
+}
+
+</style>
+
+
+{% endblock %} 
+{% block m_content %}
+
+    <div class="div1">
+    <h2 style="background:rgba( 238,18, 137,1); border-radius: 20%;position:fixed " >单类型货物，只有计算与实际不一致</h2>
+    <br><br>
+    {% for r in res_list %}
+        <div class="box" style="float:left">
+            <!-- <br> -->
+            <a style="color:red;font-weight: bold">{{r.shape_str}}</a><br>
+            <a style="color:green;font-weight: bold">计算:{{r.cal}}</a><br>
+            <a style="color:black;font-weight: bold">实际:{{r.real}}</a><br>
+            <a style="color:purple;font-weight: bold">计划:{{r.plan}}</a><br>
+            <br><a style="background: lightgreen">{{r.bin_lwh}}</a><a>VS<a style="background: lightgrey">{{r.real_bin_lwh}}</a>
+            <br>{{r._ctime}}||<a style="background: lightblue">{{r.co_no}}</a>||{{r.to_temperature}}||{{r.sto_id}}||<a style="background: seashell">{{r.s_plan}}</a>||{{r.name}}
+        </div>
+
+    {% endfor %}
+    </div>
+
+    <div class="div2">
+    <h2 style="background:rgba(0,255, 255, 1); border-radius: 20%; position:fixed " >多类型货物</h2>
+    <br><br>
+    {% for r in res_list2 %}
+
+        <div class="box" style="float:left">
+            <!-- <br> -->
+            <a style="color:red;font-weight: bold">{{r.shape_str}}</a><br>
+            <a style="color:green;font-weight: bold">计算:{{r.cal}}</a><br>
+            <a style="color:black;font-weight: bold">实际:{{r.real}}</a><br>
+            <a style="color:purple;font-weight: bold">计划:{{r.plan}}</a><br>
+            <br><a style="background: lightgreen">{{r.bin_lwh}}</a><a>VS<a style="background: lightgrey">{{r.real_bin_lwh}}</a>
+            <br>{{r._ctime}}||<a style="background: lightblue">{{r.co_no}}</a>||{{r.to_temperature}}||{{r.sto_id}}||<a style="background: seashell">{{r.s_plan}}</a>||{{r.name}}
+        </div>
+
+    {% endfor %}
+    </div>
+
+    <div class="div3">
+    <h2 style="background:rgba(0,255, 127, 1); border-radius: 20%; position:fixed " >单类型，计划，计算都和实际不一致</h2>
+    <br><br>
+    {% for r in res_list3 %}
+
+        <div class="box" style="float:left">
+            <!-- <br> -->
+            <a style="color:red;font-weight: bold">{{r.shape_str}}</a><br>
+            <a style="color:green;font-weight: bold">计算:{{r.cal}}</a><br>
+            <a style="color:black;font-weight: bold">实际:{{r.real}}</a><br>
+            <a style="color:purple;font-weight: bold">计划:{{r.plan}}</a><br>
+            <br><a style="background: lightgreen">{{r.bin_lwh}}</a><a>VS<a style="background: lightgrey">{{r.real_bin_lwh}}</a>
+            <br>{{r._ctime}}||<a style="background: lightblue">{{r.co_no}}</a>||{{r.to_temperature}}||{{r.sto_id}}||<a style="background: seashell">{{r.s_plan}}</a>||{{r.name}}
+        </div>
+
+    {% endfor %}
+    </div>
+
+{% endblock %}
+
+
+
+
+

@@ -1,0 +1,14 @@
+{
+  "e_list": [
+    {
+      "c_name": "c1",
+      "d_url": "/echarts_pg/ecj?d=templates/echarts_pg/ec_json_test&j=bar.json",
+      "p_type": "bar"
+    },
+    {
+      "c_name": "c2",
+      "d_url": "/echarts_pg/ecj?d=templates/echarts_pg/ec_json_test&j=area_stack.json",
+      "p_type": "area_stack"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+
+{% extends 'base/base2.html' %}
+
+{% block m_content %}
+
+
+<h4><a href="/file_tree/tree?eco_dir_path={{father_path}}" style="color:green">{{father_path}}</a></h4>
+
+{% for line in f_lines %}
+<p>{{line}}</p>
+{% endfor %}
+
+
+{% endblock %}
+

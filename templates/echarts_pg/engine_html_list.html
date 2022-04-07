@@ -1,0 +1,68 @@
+  
+{% extends 'base/base2.html' %}
+
+{% block css %}
+<style>
+
+
+  .box {
+    /*text-align: center;*/
+    width: 97.5%;
+    border: 1px solid snow;
+    float: left;
+    border-radius: .4rem;
+    margin-left: 1rem;
+
+  }  
+
+  .box0 {
+    /*text-align: center;*/
+    width: 150px;
+    background:#836FFF;
+    /*margin:1px;*/
+    height: 20px;
+    overflow:hidden;
+    float: left;
+    border: 1px solid snow;
+    border-radius: .4rem;
+    margin-left: 1rem;
+
+  }  
+
+
+  .box1 {
+    /*text-align: center;*/
+    width: 155px;
+    /*margin:1px;*/
+ /*   height: 85px;*/
+    float: left;
+    border: 1px solid snow;
+    border-radius: .4rem;
+    /*margin-left: 1rem;*/
+
+  }  
+
+
+</style>
+{% endblock %}
+
+{% block m_content %}
+
+{% for item in j_dict %}
+<h3 style="font-weight: bold;float:left;color:black;border:1px solid black;border-radius: .4rem;">{{item}}</h3>
+
+<div class="box">
+  {% for list_i in j_dict[item] %}
+    <div style="float:left">
+    <div class="box0" style="background: {{color_c_dict[item]}};border:1px solid black;"><a style="">{{list_i.name}}</a></div>
+    <a href="/echarts_pg/engine_html_open?hname={{list_i.name}}" style="background: limegreen;color:white;border-radius: .4rem;">打开</a>
+
+    </div>
+  {% endfor %}
+  
+</div>
+
+{% endfor %}
+
+
+{% endblock %}

@@ -1,0 +1,8 @@
+
+pip3.7 install -i https://pypi.douban.com/simple matplotlib
+pip3.7 install -i https://pypi.douban.com/simple seaborn
+
+#### 可能报错，Centos安装Pillow模块出错解决办法（待解决）
+sudo yum install python-devel
+sudo yum install zlib-devel
+sudo yum install libjpeg-turbo-devel

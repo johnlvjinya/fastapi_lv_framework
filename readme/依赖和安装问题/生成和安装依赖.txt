@@ -1,0 +1,9 @@
+
+#### 生成requirements.txt
+pip install -i https://pypi.douban.com/simple pipreqs
+# 在当前目录生成
+pipreqs . --encoding=utf8 --force
+
+
+# 安装依赖	
+pip3.7 install -i https://pypi.douban.com/simple -r requirements.txt
