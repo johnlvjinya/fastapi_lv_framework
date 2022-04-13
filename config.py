@@ -11,21 +11,24 @@ import platform
 ######### kudu下载数据的保存路径和覆盖方式
 ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
 ################## sea_table 生生分享的api
-st_api_token = '83d54f7aeda33c6b172c2e4535c1eb049fc14acb'
+### 用户名：1040635691@qq.com 密码：wosh...  登录seatable
+st_api_token = '0bfd623fc845592c776d8c35e2f24ae69cf3eb53'
 server_url='https://cloud.seatable.cn'
 
 ###################################################### 数据和文件保存的路径
 current_system = platform.system()
 if current_system is 'Windows':
-    pre_data_str = 'D:/stock'             # windows系统
+    pre_data_str = 'D:/fastapi_lv_framework'             # windows系统
     python = 'python'
 else:
-    pre_data_str = "/lvf/stock"       # linux系统
+    pre_data_str = "/lvf/fastapi_lv_framework"       # linux系统
     python = 'python3.7'
 f_stop_point_list = ['D:/', '/lvf']    # 文件展示停止递归的节点
 
 f_path = {
     'temp':os.path.join(pre_data_str, 'temp'),
+    'python_projects':os.path.join(pre_data_str, 'python_projects'),
+    'md_files':os.path.join(pre_data_str, 'md_files'),
     'pickle':os.path.join(pre_data_str, 'pickle'),
     'stock':os.path.join(pre_data_str, 'stock'),
     'data_analysis_res':os.path.join(pre_data_str, 'data_analysis_res'),

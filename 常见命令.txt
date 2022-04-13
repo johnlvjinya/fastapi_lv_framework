@@ -1,32 +1,11 @@
 
-git 项目地址：http://2587984bx6.zicp.vip/lvjinya/ss_algorithm_all
 
-服务器：		101.132.107.216
-用户名： 		ashsh
-密码：		3edcXDR%
-目录：		cd /mnt/app/ss_algorithm_all
+###################################后台启动
+if "%1"=="hide" goto CmdBegin
+start mshta vbscript:createobject("wscript.shell").run("""%~0"" hide",0)(window.close)&&exit
+:CmdBegin
 
-git pull
-lvjinya
-b;i.qn#wPMbg6hr8
-
-########## 关掉python3.7所有进程
-ps -ef | grep python3.7 | grep -v grep | awk '{print $2}' | xargs kill -9
-
-###### 运行
-python3.7 dev.py      		# 测试用
-python3.7 sch.py  	# 定时任务测试
-
-nohup python3.7 pro.py 1>>log.txt &  	# nohup运行
-nohup python3.7 sch.py 1>>log.txt &  	# nohup运行定时任务
-
-######### 安装依赖	
-pip3.7 install -i https://pypi.douban.com/simple -r requirements.txt
+cd C:\Users\lvjinya\Desktop\p_env_tools_natapp-win64-remote-control
+natapp -authtoken=8d340a67a12dddc9
 
 
-#########注意：
-log不要用文中，有可能乱码
-
-###### 查找和关闭进程
-netstat -apn  | grep 5004
-kill -9 3252
