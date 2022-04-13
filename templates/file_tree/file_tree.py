@@ -4,6 +4,7 @@ sys.path.append('../../..')
 import os
 import json
 import config
+import myutils.login_hash as mlh
 import pandas as pd
 import myutils.myfile_tree as mmft
 from fastapi import APIRouter, Request, Form
@@ -22,14 +23,14 @@ file_dict = config.f_path
 @router.get("/11")
 def x11(request: Request, username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
-    if str(__name__).split('.')[-1] in config.users[config.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
+    if str(__name__).split('.')[-1] in config.users[mlh.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
     return {"test": "test_html!"}
 
 # http://127.0.0.1:5004/file_tree/file_str?eco_f_path=
 @router.get('/file_str')                 # 检查数据不一致的问题
 def file_str(request: Request, eco_f_path:str, username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
-    if str(__name__).split('.')[-1] in config.users[config.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
+    if str(__name__).split('.')[-1] in config.users[mlh.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
     fi_path = eco_f_path # 'log/装箱算法/01请求说明.txt'
     # print(fi_path, '<================||==')
 
@@ -60,7 +61,7 @@ def file_str(request: Request, eco_f_path:str, username: Optional[str] = Cookie(
 @router.get('/tree')                 # 参考log_check，展示任意一个文件夹
 def tree(request: Request, eco_dir_path:str, username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
-    if str(__name__).split('.')[-1] in config.users[config.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
+    if str(__name__).split('.')[-1] in config.users[mlh.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
     # file_dict = {
     #     'log_daily_check':config.f_path['log_daily_check'],
     #     'log_daily_info':config.f_path['log_daily_info'],
@@ -127,7 +128,7 @@ def tree(request: Request, eco_dir_path:str, username: Optional[str] = Cookie(de
 @router.get('/image_data_tree')   # 数据分析，将一个文件夹的图片和图片的介绍渲染到html
 def image_data_tree(request: Request, eco_dir_path:str,echo2_str:str, username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/') 
-    if str(__name__).split('.')[-1] in config.users[config.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
+    if str(__name__).split('.')[-1] in config.users[mlh.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
     
     ####### 注意eco_dir_path是一阶目录，echo2_str是二阶目录。当eco_dir_path=''就表示再自己文件夹内，否则就是跳到电脑的其他目录下面
     if eco_dir_path in file_dict:
@@ -201,7 +202,7 @@ def image_data_tree(request: Request, eco_dir_path:str,echo2_str:str, username: 
 @router.get('/image_data_file_list')    # 展示目前所有的分析的文件目录
 def image_data_file_list(request: Request, username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/') 
-    if str(__name__).split('.')[-1] in config.users[config.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
+    if str(__name__).split('.')[-1] in config.users[mlh.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
 
     ac_file_dict = {}
     for k,v in config.img_file_dict.items():       # 所有保存分析图片和结果的文件夹,第一类直接出现的文件夹

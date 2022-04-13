@@ -4,6 +4,7 @@ sys.path.append('../../..')
 import os
 import json
 import config
+import myutils.login_hash as mlh
 import myutils.myfile_tree as mmft
 from fastapi import APIRouter, Request, Form,File, UploadFile
 from starlette.responses import FileResponse
@@ -21,7 +22,7 @@ router = APIRouter()
 @router.get('/file_upload_dir_list')                 # 接受上传的所有文件目录
 def file_upload_dir_list(request: Request, username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
-    if str(__name__).split('.')[-1] in config.users[config.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
+    if str(__name__).split('.')[-1] in config.users[mlh.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
     
     res_dict = {}
     for k,v in config.ac_dir_dict.items():
@@ -38,7 +39,7 @@ def file_upload_dir_list(request: Request, username: Optional[str] = Cookie(defa
 @router.get('/file_upload_dir_one_dir')                 # 接受上传的所有文件目录
 def file_upload_dir_one_dir(request: Request,dir_name:str, username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
-    if str(__name__).split('.')[-1] in config.users[config.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
+    if str(__name__).split('.')[-1] in config.users[mlh.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
     
     file_list1 = os.listdir(dir_name)
     file_list = []
@@ -68,7 +69,7 @@ def file_upload_dir_one_dir(request: Request,dir_name:str, username: Optional[st
 @router.post('/file')                 # 接受上传的所有文件目录
 async def file(request: Request, dir_name:str, username: Optional[str] = Cookie(default=None), file: UploadFile = File(...)):
     if not username:return RedirectResponse('/')
-    if str(__name__).split('.')[-1] in config.users[config.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
+    if str(__name__).split('.')[-1] in config.users[mlh.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
     
     # rq_dict = {}
     # for x in request.__dict__['_headers'].__dict__['_list']:
@@ -96,7 +97,7 @@ async def file(request: Request, dir_name:str, username: Optional[str] = Cookie(
 @router.post('/files')                 # 接受上传的所有文件目录
 async def files(request: Request, dir_name:str, username: Optional[str] = Cookie(default=None), files: List[UploadFile] = File(...)):
     if not username:return RedirectResponse('/')
-    if str(__name__).split('.')[-1] in config.users[config.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
+    if str(__name__).split('.')[-1] in config.users[mlh.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
     try:
         for file in files:
             res = await file.read()
@@ -109,7 +110,7 @@ async def files(request: Request, dir_name:str, username: Optional[str] = Cookie
 @router.post('/dir_create')                 # 接受上传的所有文件目录
 def dir_create(request: Request, dir_name:str, username: Optional[str] = Cookie(default=None), file_dir_name: str = Form(...)):
     if not username:return RedirectResponse('/')
-    if str(__name__).split('.')[-1] in config.users[config.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
+    if str(__name__).split('.')[-1] in config.users[mlh.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
     try:
         new_path = os.path.join(dir_name, file_dir_name)
         if os.path.exists(new_path) is False:os.makedirs(new_path)        
@@ -121,7 +122,7 @@ def dir_create(request: Request, dir_name:str, username: Optional[str] = Cookie(
 @router.post('/file_delete')                 # 检查数据不一致的问题
 def file_delete(request: Request, eco_f_path:str, dir_name:str, username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
-    if str(__name__).split('.')[-1] in config.users[config.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
+    if str(__name__).split('.')[-1] in config.users[mlh.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
 
     t_path = os.path.join(dir_name, eco_f_path)
     print('eco_f_path.......', eco_f_path, 't_path...', t_path)

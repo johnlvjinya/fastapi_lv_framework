@@ -1,6 +1,5 @@
 
 
-
 <html lang="zh-CN">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -10,49 +9,10 @@
         <link rel="stylesheet" href="/static/css/base1.css">
         {% block css %}
         {% endblock %}    
-
-        <script src="/static/js/jquery.min.js"></script>
+        <script type="text/javascript" src="/static/js/jquery.min.js"></script>
         <script type="text/javascript" src="/static/js/echarts.min.js"></script>
-        <!-- <script type="text/javascript" src="/static/js/ecStat.js"></script> -->
-        <script type="text/javascript" src="/static/js/china.js"></script>
-        <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@4/map/js/china.js"></script> -->
-        <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@4/map/js/world.js"></script> -->
-        <!-- <script type="text/javascript" src="/static/public/js/echarts_theme/dark.js"></script> -->
-        <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/dataTool.min.js"></script> -->
-
-
         {% block script %}
         {% endblock %}     
-
-        <script>
-           function hide_div_ele(ele_name){
-            console.log('hide_div_ele..............................');
-            ele_list = document.getElementsByClassName(ele_name);
-            console.log(ele_list);
-            for(var i = 0; i < ele_list.length; i++){
-                ele_list[i].style.display='none';
-            }
-            s = $('div').get('.')
-            print(s)
-
-           };
-
-           function show_div_ele(ele_name){
-            console.log('show_div_ele..............................');
-            ele_list = document.getElementsByClassName(ele_name);
-            for(var i = 0; i < ele_list.length; i++){
-                ele_list[i].style.display='inline';
-            }
-           };
-
-            function reload(){
-                location.reload();
-            }
-
-
-        </script>
-
-
     </head>
     <body style="overflow-y:auto;">
         <div class="myindex">

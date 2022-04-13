@@ -13,13 +13,13 @@ from fastapi.templating import Jinja2Templates
 from fastapi import Cookie
 from fastapi.responses import Response
 from starlette.responses import RedirectResponse
-
+import myutils.login_hash as mlh
 
 templates = Jinja2Templates(directory='templates/')
 router = APIRouter()
 
-SECRET_KEY = config.SECRET_KEY
-PASSWORD_SALT = config.PASSWORD_SALT# '497166f192bc8629d7449cf8ad8ea371331ebc2df53b1ee485cf03db9279c3d9'
+SECRET_KEY = mlh.SECRET_KEY
+PASSWORD_SALT = mlh.PASSWORD_SALT  # '497166f192bc8629d7449cf8ad8ea371331ebc2df53b1ee485cf03db9279c3d9'
 users = config.users
 
 
@@ -34,7 +34,7 @@ def verify_password(username: str, password: str) -> bool:
 @router.get("/")  
 def index_page(request: Request,username: Optional[str] = Cookie(default=None)):
     if not username:return templates.TemplateResponse('login_logout/login.html', context={'request': request,})
-    valid_username = config.get_username_from_signed_string(username)  ######## 得到合法的用户名和密码
+    valid_username = mlh.get_username_from_signed_string(username)  ######## 得到合法的用户名和密码
     return RedirectResponse('/home_pg')
     
 # cookie saved or auto-identification passed - welcome, no - "I don’t know you!"
@@ -44,7 +44,7 @@ def process_login_page(request: Request, username : str = Form(...), password : 
     print(user, 'user==========')
     if not user or not verify_password(username, password):return Response("I don’t know you!", media_type="text/html")
     response = templates.TemplateResponse('login_logout/login_success.html', context={'request': request,})
-    username_signed = base64.b64encode(username.encode()).decode() + "." + config.sign_data(username)
+    username_signed = base64.b64encode(username.encode()).decode() + "." + mlh.sign_data(username)
     response.set_cookie(key="username", value=username_signed)
     return response
 
@@ -56,7 +56,7 @@ def login_get(request: Request,username: Optional[str] = Cookie(default=None)):
 @router.get("/logout")
 def logout(request: Request,username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
-    valid_username = config.get_username_from_signed_string(username)
+    valid_username = mlh.get_username_from_signed_string(username)
     response = templates.TemplateResponse('login_logout/logout.html', context={'request': request,})
     response.delete_cookie(key="username")
     return response
@@ -67,7 +67,7 @@ def no_permission(request: Request):
 
 @router.get("/user_info")     
 def user_info(request: Request, username: Optional[str] = Cookie(default=None)):
-    my_name = config.get_username_from_signed_string(username)
+    my_name = mlh.get_username_from_signed_string(username)
     myrole = str(config.users[my_name]['stop_list'])
     return templates.TemplateResponse('login_logout/user_info.html', context=
         {'request': request,

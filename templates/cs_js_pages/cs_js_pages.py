@@ -3,7 +3,7 @@ import sys
 sys.path.append('../../..')
 import os
 import config
-import myutils.mylogger as mml
+import myutils.login_hash as mlh
 from fastapi.templating import Jinja2Templates
 from fastapi import APIRouter, Request, Form
 from fastapi.responses import JSONResponse
@@ -27,14 +27,14 @@ def x11(request: Request, username: Optional[str] = Cookie(default=None)):
 @router.get("/test_eco")
 def test_eco(request: Request, test1:str, username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
-    if str(__name__).split('.')[-1] in config.users[config.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
+    if str(__name__).split('.')[-1] in config.users[mlh.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
     eco = test1
     return templates.TemplateResponse('cs_js_pages/test_eco.html', context={'request': request,'eco':eco})
 
 @router.get("/static_page")
 def static_page(request: Request, page_name:str, username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
-    if str(__name__).split('.')[-1] in config.users[config.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
+    if str(__name__).split('.')[-1] in config.users[mlh.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
     
     # page_name = 'button_hover.html'
     return templates.TemplateResponse('cs_js_pages/static_pages/%s'%page_name, context={'request': request})
@@ -42,7 +42,7 @@ def static_page(request: Request, page_name:str, username: Optional[str] = Cooki
 @router.get("/static_page_list")
 def static_page_list(request: Request, username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
-    if str(__name__).split('.')[-1] in config.users[config.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
+    if str(__name__).split('.')[-1] in config.users[mlh.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
     
     page_list = os.listdir('templates/cs_js_pages/static_pages')
     page_dict_list = []
@@ -57,7 +57,7 @@ def static_page_list(request: Request, username: Optional[str] = Cookie(default=
 @router.get("/icon_list")
 def icon_list(request: Request, first_char:str, username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
-    if str(__name__).split('.')[-1] in config.users[config.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
+    if str(__name__).split('.')[-1] in config.users[mlh.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
     
     icon_list = os.listdir('static/icons')
     chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
@@ -88,7 +88,7 @@ def icon_list(request: Request, first_char:str, username: Optional[str] = Cookie
 @router.get("/test_form_one")
 def test_form_one(request: Request, username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
-    if str(__name__).split('.')[-1] in config.users[config.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
+    if str(__name__).split('.')[-1] in config.users[mlh.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
     return templates.TemplateResponse('cs_js_pages/test_form_one.html', context={
         'request': request,
         }, 
@@ -97,7 +97,7 @@ def test_form_one(request: Request, username: Optional[str] = Cookie(default=Non
 @router.get("/test_form_loop")
 def test_form_one(request: Request, username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
-    if str(__name__).split('.')[-1] in config.users[config.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
+    if str(__name__).split('.')[-1] in config.users[mlh.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
     
     form_id_list = [str(i) for i in range(5)]
     return templates.TemplateResponse('cs_js_pages/test_form_loop.html', context={
@@ -110,7 +110,7 @@ def test_form_one(request: Request, username: Optional[str] = Cookie(default=Non
 @router.get("/test_form_deal")
 def test_form_deal(request: Request, data:str, username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
-    if str(__name__).split('.')[-1] in config.users[config.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
+    if str(__name__).split('.')[-1] in config.users[mlh.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
     
     msg = {
     'data':json.loads(data),

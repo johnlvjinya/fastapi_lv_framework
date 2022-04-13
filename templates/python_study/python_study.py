@@ -5,6 +5,7 @@ sys.path.append('../../..')
 import os
 import json
 import config
+import myutils.login_hash as mlh
 import subprocess
 import pandas as pd
 from fastapi import APIRouter, Request, Form
@@ -22,7 +23,7 @@ router = APIRouter()
 @router.get("/hello_python")
 def hello_python(request: Request,username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
-    if str(__name__).split('.')[-1] in config.users[config.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
+    if str(__name__).split('.')[-1] in config.users[mlh.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
 
     return {'test':'hello python'}
 

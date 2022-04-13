@@ -3,6 +3,7 @@ import sys
 sys.path.append('../../..')
 import os
 import config
+import myutils.login_hash as mlh
 from fastapi.templating import Jinja2Templates
 from fastapi import APIRouter, Request, Form
 from fastapi.responses import JSONResponse
@@ -173,7 +174,7 @@ def engine_json_run(request: Request, jname:str,run_type:str,username: Optional[
 @router.get("/ec_json_path")
 def ec_json_path(request: Request, jpath:str, username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
-    if str(__name__).split('.')[-1] in config.users[config.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
+    if str(__name__).split('.')[-1] in config.users[mlh.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
     mydict = json.loads(open(jpath, "rb").read())
     return mydict
 
@@ -181,7 +182,7 @@ def ec_json_path(request: Request, jpath:str, username: Optional[str] = Cookie(d
 @router.get("/ecj")
 def ec_json_path(request: Request, d:str,j, username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
-    if str(__name__).split('.')[-1] in config.users[config.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
+    if str(__name__).split('.')[-1] in config.users[mlh.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
 
     file_dict = config.f_path
     if d in file_dict:
@@ -271,7 +272,7 @@ def ec_json_path(request: Request, d:str,j, username: Optional[str] = Cookie(def
 @router.get("/echarts_code_engine")
 def echarts_code_engine(request: Request, js_data_url:str,container_id:str,plt_type:str, username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
-    if str(__name__).split('.')[-1] in config.users[config.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
+    if str(__name__).split('.')[-1] in config.users[mlh.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
     env = Environment(loader = FileSystemLoader("./"))
     ec_path = 'templates/echarts_pg/ec_templates'
     # print(exist_js_list)
@@ -287,7 +288,7 @@ def echarts_code_engine(request: Request, js_data_url:str,container_id:str,plt_t
 @router.get("/echarts_code_engine_list")
 def echarts_code_engine_list(request: Request, username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
-    if str(__name__).split('.')[-1] in config.users[config.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
+    if str(__name__).split('.')[-1] in config.users[mlh.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
     exist_js_list = [x.replace('.js', '') for x in os.listdir('templates/echarts_pg/ec_templates')]
 
     jps_str = 'templates/echarts_pg/ec_json_test'

@@ -5,6 +5,7 @@ sys.path.append('../../..')
 import os
 import json
 import config
+import myutils.login_hash as mlh
 import subprocess
 import pandas as pd
 from fastapi import APIRouter, Request, Form
@@ -14,7 +15,6 @@ from fastapi.responses import StreamingResponse
 from typing import Optional
 from fastapi import Cookie
 from starlette.responses import RedirectResponse
-from myutils.myrds import rds_sql_res
 import pymysql.cursors
 import numpy as np
 import myutils.get_route_report as mgrr
@@ -25,7 +25,7 @@ router = APIRouter()
 @router.get("/bin_results_daily_print")
 def bin_results_daily_print(request: Request, day_str:str, username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
-    if str(__name__).split('.')[-1] in config.users[config.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
+    if str(__name__).split('.')[-1] in config.users[mlh.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
     
 
     from seatable_api import Base, context
@@ -279,7 +279,7 @@ def bin_results_daily_print(request: Request, day_str:str, username: Optional[st
 @router.get("/test_form_deal")
 def test_form_deal(request: Request, data:str, username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
-    if str(__name__).split('.')[-1] in config.users[config.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
+    if str(__name__).split('.')[-1] in config.users[mlh.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
     
 
     data=json.loads(data)
@@ -320,7 +320,7 @@ def test_form_deal(request: Request, data:str, username: Optional[str] = Cookie(
 @router.get("/download_seatable_reason")
 def download_seatable_reason(request: Request, username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
-    if str(__name__).split('.')[-1] in config.users[config.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
+    if str(__name__).split('.')[-1] in config.users[mlh.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
     
 
     from seatable_api import Base, context
@@ -348,7 +348,7 @@ def download_seatable_reason(request: Request, username: Optional[str] = Cookie(
 @router.get("/route_exists_real_rout_list")
 def route_exists_real_rout_list(request: Request, username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
-    if str(__name__).split('.')[-1] in config.users[config.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
+    if str(__name__).split('.')[-1] in config.users[mlh.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
     
 
     f_path = os.path.join(config.f_path['data_json'], 'route_exists_real_route_list.json')             # 箱子的基本信息字典
@@ -373,7 +373,7 @@ def route_exists_real_rout_list(request: Request, username: Optional[str] = Cook
 @router.get("/download_region_pickle_excel")
 def download_region_pickle_excel(request: Request,region_pickle:str, username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
-    if str(__name__).split('.')[-1] in config.users[config.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
+    if str(__name__).split('.')[-1] in config.users[mlh.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
     f_path = os.path.join(config.f_path['route_region_df'], region_pickle)
     df = pd.read_pickle(f_path)
 
@@ -385,7 +385,7 @@ def download_region_pickle_excel(request: Request,region_pickle:str, username: O
 @router.get("/route_report")
 def route_report(request: Request,se_str:str, username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
-    if str(__name__).split('.')[-1] in config.users[config.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
+    if str(__name__).split('.')[-1] in config.users[mlh.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
     c1 = se_str.split('-->')[0]
     c2 = se_str.split('-->')[1]
 
@@ -399,7 +399,7 @@ def route_report(request: Request,se_str:str, username: Optional[str] = Cookie(d
 @router.get("/duplicate_table_col_page")
 def duplicate_table_col_page(request: Request, username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
-    if str(__name__).split('.')[-1] in config.users[config.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
+    if str(__name__).split('.')[-1] in config.users[mlh.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
     
     return templates.TemplateResponse('mix_special_html/duplicate_table_col_page.html', 
                 context={
@@ -411,7 +411,7 @@ def duplicate_table_col_page(request: Request, username: Optional[str] = Cookie(
 @router.get("/duplicate_table_col_search")
 def duplicate_table_col_search(request: Request,tb_name : str, col_name : str,where_str, username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
-    if str(__name__).split('.')[-1] in config.users[config.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
+    if str(__name__).split('.')[-1] in config.users[mlh.get_username_from_signed_string(username)]['stop_list']:return RedirectResponse('/no_permission')
     
     ############################################################################ 从业务库查询
     host=config.host

@@ -1,9 +1,10 @@
 
+
 import sys
 sys.path.append('../../..')
 import os
 import config
-import myutils.mylogger as mml
+import myutils.login_hash as mlh
 from fastapi.templating import Jinja2Templates
 from fastapi import APIRouter, Request, Form
 
@@ -25,6 +26,8 @@ def x11(request: Request, username: Optional[str] = Cookie(default=None)):
 def home(request: Request, username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
     return RedirectResponse('/home_pg/echarts_test')
+
+
 
 @router.get("/home")
 def home11(request: Request, username: Optional[str] = Cookie(default=None)):
