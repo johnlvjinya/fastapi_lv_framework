@@ -12,9 +12,9 @@ ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
 st_api_token = '0bfd623fc845592c776d8c35e2f24ae69cf3eb53'
 server_url='https://cloud.seatable.cn'
 
+################## 腾讯云配置，参考myutils.tencent_cos_action
 
-
-###################################################### 数据和文件保存的路径
+### 数据和文件保存的路径
 current_system = platform.system()
 if current_system is 'Windows':
     python = 'python'
@@ -24,7 +24,7 @@ else:
     python = 'python3.7'
 f_stop_point_list = ['D:/', '/mnt/app/']    # 文件展示停止递归的节点
 ac_dir_dict = {
-'数据目录':pre_data_str,
+'本地文件':pre_data_str,
 }
 
 f_path = {
