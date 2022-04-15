@@ -1,5 +1,5 @@
 
-
+import pandas as pd
 from seatable_api import Base, context
 
 class MyseaTable():
@@ -12,13 +12,22 @@ class MyseaTable():
         tb_list = [x.get('name') for x in res['tables']]
         return tb_list
 
+    def get_tb_df(self, tb):
+        rows = self.base.list_rows(tb, view_name=None, order_by=None, desc=False, start=None, limit=None)
+        df = pd.DataFrame(rows)
+        return df
+
 
 
 if __name__=='__main__':
     st_api_token = '0bfd623fc845592c776d8c35e2f24ae69cf3eb53'
     mt = MyseaTable(st_api_token)
     tb_list = mt.get_sub_tb_list()
-    print(tb_list)
+
+    df = mt.get_tb_df('guitar')
+    df.to_excel('test.xlsx', index=False)
+
+
     
 
 

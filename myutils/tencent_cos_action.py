@@ -16,12 +16,10 @@ region = 'ap-shanghai'                  # 替换为用户的 Region
 token = None                            # 使用临时密钥需要传入 Token，默认为空，可不填
 scheme = 'https'                        # 指定使用 http/https 协议来访问 COS，默认为 https，可不填
 
-bucket_name = 'flask-file-manage'
+bucket_name = 'seatable-file'
 real_bname = bucket_name+secret_string   # 真实的bucket名称需要加上secret_string
 config_cos = CosConfig(Region=region, SecretId=secret_id, SecretKey=secret_key, Token=token, Scheme=scheme)
 client = CosS3Client(config_cos)               # 获取客户端对象
-
-
 
 
 def get_contained_file_list():              # 获得存储桶下的所有文件夹
@@ -40,11 +38,17 @@ def get_prefix_file_list(prefix):              # 获得存储桶下的所有文�
     )
     res = response['Contents']
     for x in res:
-        print(x)
-
-    return 1
-
-
+        # x.remove('Owner')
+        # x.remove('StorageClass')
+        x['名称'] = x['Key'].replace('%s/'%prefix, '')
+        x['cos更新时间'] = x['LastModified']
+        x.pop('Owner', None)
+        x.pop('StorageClass', None)
+        x.pop('Key', None)
+        x.pop('LastModified', None)
+        x['Size'] = round(int(x['Size'])/1024**2,1)
+        x['url'] = 'https://{0}.cos.ap-shanghai.myqcloud.com/{1}/{2}'.format(real_bname,prefix,x['名称'])
+    return res[1:]
 
 def create_new_file_list(new_file_list):                 # 需要创建文件夹
     current_file_list = get_contained_file_list()

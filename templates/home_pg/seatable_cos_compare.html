@@ -1,11 +1,59 @@
 
 {% extends 'base/base2.html' %}
+{% block css %}
+<style>
+  .bt1 {
+    background: #9AFF9A;
+    /*border: 0.1rem solid #AB82FF;*/
+    border-radius: .4rem;
+  }
+  .bt2 {
+    background: #F0FFFF;
+    border: 0.1rem solid #9b4dca;
+    /*border-radius: .4rem;*/
+  }
+
+  .box {
+    /*text-align: center;*/
+    width: 150px;
+ /*   height: 85px;*/
+    float: left;
+    overflow:hidden;
+    border-radius: .4rem;
+    margin-left: 1rem;
+  }
+
+</style>
+{% endblock %}
 
 {% block m_content %}
-<h3>cos文件</h3>
-{% for f in bucket_file_list %} 
-{{f}}<a href="/home_pg/add_cos_file_to_seatable?fname={{f}}">将cos中的文件复制到seatable中</a><br>
-{% endfor %}
-<br><br>
+
+<div class="box">
+
+<p><a class="bt1" href="/home_pg/seatable_cos_compare?c_tb=yes">创建seatable表</a></p>
+<p><a class="bt1" href="/home_pg/refresh_all_tb">更新所有表</a></p>
+</div>
+
+<div class="box" style="width:300px">
+    <table border="#ccc" cellspacing="0" cellpadding="0" table-layout:fixed style="border-collapse:collapse;">
+    <tr>
+        <th style="background:#EEE9BF">表名称</th>
+        <th style="background: #B2DFEE">#</th>
+        <th style="background: skyblue">#</th>
+    </tr>
+
+
+
+    {% for f in bucket_file_list %}
+    </tr>
+        <td style="background: snow">{{f}}</td> 
+        <td style="background: snow"><a href="/home_pg/add_cos_file_to_seatable?fname={{f}}">更新</a></td> 
+        <td style="background: snow"><a href="/home_pg/add_cos_file_to_seatable?fname={{f}}">打开</a></td> 
+    </tr>
+    {% endfor %}
+
+    </table>
+</div>
+
 
 {% endblock %}

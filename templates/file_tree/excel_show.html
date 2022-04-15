@@ -2,9 +2,10 @@
 {% extends 'base/base2.html' %}
 
 {% block m_content %}
+
+
 <div align="center">
-    
-<table id="tab02" border="#ccc" cellspacing="0" cellpadding="0" table-layout:fixed style="border-collapse:collapse;">
+<table border="#ccc" table-layout:fixed style="border-collapse:collapse;">
 <tr>
     {% for cn in cols_cn_list%}
     <th style="background: {{color_c_dict[cn]}}">{{cn}}</th>
