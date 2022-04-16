@@ -4,6 +4,7 @@ import sys
 sys.path.append('../../..')
 import os
 import config
+import pandas as pd
 import myutils.login_hash as mlh
 import myutils.tencent_cos_action as mtca
 import myutils.seatable_action as msa
@@ -26,7 +27,8 @@ def refresh_seatable(fname):
 
     mt = msa.MyseaTable(config.st_api_token)
     seatable_df = mt.get_tb_df(fname)
-    
+
+    seatable_df.to_pickle(os.path.join(config.f_path['data_excel'], '%s.pickle'%fname))
     print(seatable_df.columns)
     if 'ETag' not in seatable_df.columns:
         tag_list = []
@@ -63,8 +65,6 @@ def refresh_seatable(fname):
     mt.base.batch_update_rows(fname, update_rows)
     mt.base.batch_append_rows(fname, new_rows)    
 
-
-
 @router.get("/11")
 def x11(request: Request, username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
@@ -75,8 +75,6 @@ def home(request: Request, username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
     return RedirectResponse('/home_pg/seatable_cos_compare?c_tb=')
 
-
-
 @router.get("/seatable_cos_compare")
 def seatable_cos_compare(request: Request,c_tb:str, username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
@@ -84,14 +82,15 @@ def seatable_cos_compare(request: Request,c_tb:str, username: Optional[str] = Co
 
     if c_tb=='yes':   # 创建新的表格
         add_dict = {
-            '名称':ColumnTypes.TEXT,
-            'url':ColumnTypes.URL,
-            'cos更新时间':ColumnTypes.DATE,
-            'ETag':ColumnTypes.TEXT,
-            'Size':ColumnTypes.NUMBER,
-            'cos_state':ColumnTypes.SINGLE_SELECT,
-            '类别':ColumnTypes.SINGLE_SELECT,
-            '说明文件':ColumnTypes.FILE,
+            '名称':[ColumnTypes.TEXT,300],  # 列属性和宽度
+            'url':[ColumnTypes.URL,20],
+            'cos更新时间':[ColumnTypes.DATE,100],
+            'ETag':[ColumnTypes.TEXT,20],
+            'Size':[ColumnTypes.NUMBER,20],
+            'cos_state':[ColumnTypes.SINGLE_SELECT,60],
+            '类别':[ColumnTypes.SINGLE_SELECT,150],
+            '详细说明':[ColumnTypes.LONG_TEXT,100],
+            '说明文件':[ColumnTypes.FILE,100],
         }# '文件名,url,cos更新时间,ETag,Size'.split(',')
 
         mt = msa.MyseaTable(config.st_api_token)
@@ -103,19 +102,20 @@ def seatable_cos_compare(request: Request,c_tb:str, username: Optional[str] = Co
             cols_list = [x.get('name')for x in mt.base.list_columns(f)]
             for k,v in add_dict.items():
                 if k not in cols_list:
-                    mt.base.insert_column(table_name=f, column_name=k, column_type=v, column_key=None, column_data=None)
+                    mt.base.insert_column(table_name=f, column_name=k, column_type=v[0], column_key=None, column_data=None)
+
+                mt.base.resize_column(table_name=f, column_key=k, new_column_width=v[1])
+
                 if k=='cos_state':
                     mt.base.add_column_options(f, k, [
                             {"name": "true", "color": "#C1FFC1", "textColor": "#000000"},
                             {"name": "false", "color": "#EE30A7", "textColor": "#000000"},
                     ])
-
     return templates.TemplateResponse('home_pg/seatable_cos_compare.html', 
         context={
             'bucket_file_list': bucket_file_list,
             'request': request,
         })
-
 
 @router.get("/add_cos_file_to_seatable")
 def add_cos_file_to_seatable(request: Request,fname:str, username: Optional[str] = Cookie(default=None)):
@@ -124,15 +124,23 @@ def add_cos_file_to_seatable(request: Request,fname:str, username: Optional[str]
     return 'add_cos_file_to_seatable::::%s'%fname
 
 @router.get("/refresh_all_tb")
-def add_cos_file_to_seatable(request: Request,username: Optional[str] = Cookie(default=None)):
+def refresh_all_tb(request: Request,username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
     bucket_file_list = mtca.get_contained_file_list()
+    mdjs.save_dict_to_json({'bucket_file_list':bucket_file_list}, os.path.join(config.f_path['data_json'], 'bucket_file_list.json'))
     try:
         for f in bucket_file_list:
             refresh_seatable(f)
         return RedirectResponse('/home_pg/seatable_cos_compare?c_tb=')
     except Exception as e:
         return str(e)
+
+@router.get("/cos_one_file")
+def cos_one_file(request: Request,fname:str,username: Optional[str] = Cookie(default=None)):
+    if not username:return RedirectResponse('/')
+    df = pd.read_pickle(os.path.join(config.f_path['data_excel'], '%s.pickle'%fname))
+    print(df)
+    return fname
 
 @router.get("/home")
 def home11(request: Request, username: Optional[str] = Cookie(default=None)):
