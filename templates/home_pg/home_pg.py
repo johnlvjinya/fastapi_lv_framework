@@ -7,6 +7,8 @@ import config
 import myutils.login_hash as mlh
 import myutils.tencent_cos_action as mtca
 import myutils.seatable_action as msa
+import myutils.dict_json_saver as mdjs
+
 from fastapi.templating import Jinja2Templates
 from fastapi import APIRouter, Request, Form
 
@@ -24,6 +26,7 @@ def refresh_seatable(fname):
 
     mt = msa.MyseaTable(config.st_api_token)
     seatable_df = mt.get_tb_df(fname)
+    
     print(seatable_df.columns)
     if 'ETag' not in seatable_df.columns:
         tag_list = []
@@ -36,8 +39,6 @@ def refresh_seatable(fname):
     new_rows = []           # 新增加的列
     update_rows = []        # 更新的列
     no_cos_rows = []        # cos中没有的行
-
-
     for i,r in seatable_df.iterrows():
         if r['ETag'] not in cos_exists_tag_list:
             dict_i = {
@@ -125,7 +126,6 @@ def add_cos_file_to_seatable(request: Request,fname:str, username: Optional[str]
 @router.get("/refresh_all_tb")
 def add_cos_file_to_seatable(request: Request,username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
-
     bucket_file_list = mtca.get_contained_file_list()
     try:
         for f in bucket_file_list:
