@@ -139,7 +139,7 @@ def refresh_all_tb(request: Request,username: Optional[str] = Cookie(default=Non
 def cos_one_file(request: Request,fname:str,username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
     df = pd.read_pickle(os.path.join(config.f_path['data_excel'], '%s.pickle'%fname))
-    print(df)
+    # print(df)
     return fname
 
 @router.get("/home")

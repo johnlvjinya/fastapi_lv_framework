@@ -27,5 +27,5 @@ app.include_router(python_study.router, prefix="/python_study", tags=["python_st
 
 
 if __name__ == '__main__':
-    uvicorn.run(app='dev:app', host="0.0.0.0",port=5004, debug=True,workers=4) # ,debug=True
+    uvicorn.run(app='dev:app', host="0.0.0.0",port=5000, debug=True,workers=4) # ,debug=True
     
