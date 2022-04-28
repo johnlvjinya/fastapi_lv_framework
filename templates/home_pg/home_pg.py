@@ -3,6 +3,7 @@
 import sys
 sys.path.append('../../..')
 import os
+import json
 import config
 import pandas as pd
 import myutils.login_hash as mlh
@@ -63,7 +64,7 @@ def refresh_seatable(fname):
             new_rows.append(dict_f)
             pass
     mt.base.batch_update_rows(fname, update_rows)
-    mt.base.batch_append_rows(fname, new_rows)    
+    mt.base.batch_append_rows(fname, new_rows)
 
 @router.get("/11")
 def x11(request: Request, username: Optional[str] = Cookie(default=None)):
@@ -73,13 +74,40 @@ def x11(request: Request, username: Optional[str] = Cookie(default=None)):
 @router.get("/")       ############# 默认模板，ec_模板.html等完成后替换
 def home(request: Request, username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
-    return RedirectResponse('/home_pg/seatable_cos_compare?c_tb=')
+    return RedirectResponse('/home_pg/seatable_cos_compare?c_tb=&tb=&f=')
 
 @router.get("/seatable_cos_compare")
-def seatable_cos_compare(request: Request,c_tb:str, username: Optional[str] = Cookie(default=None)):
+def seatable_cos_compare(request: Request,c_tb:str,tb:str,f:str, username: Optional[str] = Cookie(default=None)):
     if not username:return RedirectResponse('/')
     bucket_file_list = mtca.get_contained_file_list()
+    mt = msa.MyseaTable(config.st_api_token)
 
+    tb_res_list = []
+    if tb:
+        tb_df = mt.get_tb_df(tb)
+        if '类别' not in tb_df.columns:
+            tb_df['类别'] = ''
+        tb_df = tb_df.sort_values('类别').reset_index(drop=True)
+        name_dict = {
+            '名称':'name',
+            'cos更新时间':'cos_updatetime',
+            '类别':'ftype'
+        }
+        tb_df.rename(columns=name_dict, inplace=True)
+        # tb_df.to_excel('test.xlsx', index=False)
+        tb_res_list = tb_df.to_dict('records')
+
+    else:
+        tb = ''
+
+    if f:  # 展开文件
+        print(f)
+        f_path = os.path.join(config.f_path['data_json'], 'st_tb_dict.json')
+        st_tid_dict = json.load(open(f_path, "rb"))
+        iframe_str = 'https://cloud.seatable.cn/workspace/221309/dtable/file_manager/?tid=%s&vid=0000&row-id=%s'%(st_tid_dict.get(tb), f)
+    else:
+        iframe_str = ''
+    
     if c_tb=='yes':   # 创建新的表格
         add_dict = {
             '名称':[ColumnTypes.TEXT,300],  # 列属性和宽度
@@ -93,7 +121,7 @@ def seatable_cos_compare(request: Request,c_tb:str, username: Optional[str] = Co
             '说明文件':[ColumnTypes.FILE,100],
         }# '文件名,url,cos更新时间,ETag,Size'.split(',')
 
-        mt = msa.MyseaTable(config.st_api_token)
+        
         st_tb_list = mt.get_sub_tb_list()
         for f in bucket_file_list:
             if f not in st_tb_list:
@@ -115,6 +143,10 @@ def seatable_cos_compare(request: Request,c_tb:str, username: Optional[str] = Co
         context={
             'bucket_file_list': bucket_file_list,
             'request': request,
+            'tb_res_list':tb_res_list,
+            'tb':tb,
+            'iframe_str':iframe_str
+
         })
 
 @router.get("/add_cos_file_to_seatable")

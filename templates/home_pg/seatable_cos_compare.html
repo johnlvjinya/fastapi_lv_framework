@@ -28,34 +28,44 @@
 
 {% block m_content %}
 
-<div class="box">
-
-<p><a class="bt1" href="/home_pg/seatable_cos_compare?c_tb=yes">创建seatable表</a></p>
-<p><a class="bt1" href="/home_pg/refresh_all_tb">更新所有表</a></p>
-<p><a class="bt1" href="https://cloud.seatable.cn/workspace/221309/dtable/file_manager/?tid=ph75&vid=0000" target="_blank">打开seatable表</a></p>
-
-</div>
-
-<div class="box" style="width:300px">
-    <table border="#ccc" cellspacing="0" cellpadding="0" table-layout:fixed style="border-collapse:collapse;">
+<div class="box" width="20" style="width:8%">
+    <table border="1" align="left" style="border-collapse:collapse;border: solid 1px #ccc">
     <tr>
-        <th style="background:#EEE9BF">表名称</th>
-        <th style="background: #B2DFEE">#</th>
-        <th style="background: skyblue">#</th>
+        
+        <th align="left">更新</th>
+        <th align="left">表</th>
     </tr>
-
-
 
     {% for f in bucket_file_list %}
     </tr>
-        <td style="background: snow">{{f}}</td> 
-        <td style="background: snow"><a href="/home_pg/add_cos_file_to_seatable?fname={{f}}">更新</a></td> 
-        <td style="background: snow"><a href="/home_pg/cos_one_file?fname={{f}}">打开</a></td> 
+        <td ><a href="/home_pg/add_cos_file_to_seatable?fname={{f}}">#</a></td>
+        <td ><a href="/home_pg/seatable_cos_compare?c_tb=&tb={{f}}&f=">{{f}}</a></td> 
     </tr>
     {% endfor %}
 
     </table>
 </div>
 
+<div class="box" style="width:35%">
+    <table border="1" align="left" style="border-collapse:collapse;border: solid 1px #ccc">
+    <tr>
+        <th align="left">类别</th>
+        <th align="left">下载</th>
+        <th align="left">详情</th>
+    </tr>
 
+    {% for r in tb_res_list %}
+    </tr>
+        <td ><a>{{r.ftype}}</a></td> 
+        <td ><a href="{{r.url}}" target="_blank">#</a></td> 
+        <td ><a href="/home_pg/seatable_cos_compare?c_tb=&tb={{tb}}&f={{r._id}}">{{r.name}}</a></td> 
+    </tr>
+    {% endfor %}
+
+    </table>
+</div>
+
+<div class="box" style="width:35%">
+<iframe src="{{iframe_str}}", height="100%", width="95%" style="border:none;margin-top:0"></iframe>
+</div>
 {% endblock %}
